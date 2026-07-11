@@ -9,7 +9,19 @@ npm install
 npm run dev
 ```
 
-The typed content layer is in `data/site-data.ts`; replace those exports with CMS/API fetchers when the backend is ready. Contact details are centralized in the `settings` object.
+## Dynamic-content architecture
+
+All page content flows through `lib/content-repository.ts`. The current repository reads typed mock data from `data/site-data.ts`; when the backend is ready, replace only the repository methods with database/CMS/API queries. Page and UI components can remain unchanged.
+
+Available frontend API contracts:
+
+- `GET /api/site` — site settings, navigation and FAQs
+- `GET /api/categories`
+- `GET /api/products?q=&category=&style=&space=`
+- `GET /api/products/[slug]`
+- `GET /api/projects?type=`
+- `GET /api/posts`
+- `POST /api/inquiries` — validated inquiry payload, ready to connect to a CRM/database
 
 ## Routes
 

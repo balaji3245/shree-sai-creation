@@ -4,14 +4,18 @@
 
 * { border-color: rgb(228 223 214 / .7); }
 html { scroll-behavior: smooth; }
-body { background: #f6f3ed; color: #181715; font-family: var(--font-manrope), sans-serif; }
-::selection { background: #b8955e; color: white; }
+body { background: #f5f5f5; color: #0b0f19; font-family: var(--font-manrope), sans-serif; }
+::selection { background: #d4af37; color: #0b0f19; }
 @layer components {
- .container-luxe { @apply mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12; }
+ .container-luxe { @apply mx-auto w-full max-w-[1560px] px-5 sm:px-8 lg:px-12; }
  .eyebrow { @apply text-[10px] font-bold uppercase tracking-[.22em] text-champagne; }
  .display { @apply font-display font-medium leading-[.92] tracking-[-.045em]; }
- .button-gold { @apply inline-flex items-center justify-center gap-2 bg-champagne px-5 py-3 text-xs font-bold uppercase tracking-[.13em] text-white transition hover:bg-bronze; }
- .button-line { @apply inline-flex items-center justify-center gap-2 border border-current px-5 py-3 text-xs font-bold uppercase tracking-[.13em] transition hover:bg-ink hover:text-ivory; }
- .section-space { @apply py-20 sm:py-28 lg:py-36; }
+ .button-gold { @apply inline-flex items-center justify-center gap-2 rounded-full bg-champagne px-6 py-3.5 text-[10px] font-bold uppercase tracking-[.16em] text-ink shadow-glow transition duration-300 hover:-translate-y-0.5 hover:bg-[#efcc58]; }
+ .button-line { @apply inline-flex items-center justify-center gap-2 rounded-full border border-current px-6 py-3.5 text-[10px] font-bold uppercase tracking-[.16em] transition duration-300 hover:-translate-y-0.5 hover:bg-ink hover:text-ivory; }
+ .section-space { @apply py-24 sm:py-32 lg:py-40; }
  .image-zoom { @apply transition duration-700 group-hover:scale-105; }
 }
+@keyframes drift { 0%, 100% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(0,-14px,0) scale(1.02); } }
+@keyframes marquee { to { transform: translateX(-50%); } }
+.drift { animation: drift 12s ease-in-out infinite; }
+.marquee-track { animation: marquee 24s linear infinite; }

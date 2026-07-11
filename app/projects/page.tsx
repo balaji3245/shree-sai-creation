@@ -1,11 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PageHero } from '@/components/shared/page-hero';
-import { projects } from '@/data/site-data';
+import type { Project } from '@/types';
 
 export default function ProjectsPage() {
   const [activeType, setActiveType] = useState('All');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => { fetch('/api/projects').then((response) => response.json()).then((response) => setProjects(response.data)).finally(() => setLoaded(true)); }, []);
   const projectTypes = ['All', ...Array.from(new Set(projects.map((project) => project.type)))];
   const visibleProjects = projects.filter(
     (project) => activeType === 'All' || project.type === activeType,
@@ -50,6 +53,7 @@ export default function ProjectsPage() {
             </article>
           ))}
         </div>
+        {loaded && !visibleProjects.length && <p className="py-16 text-center text-sm text-ink/50">No projects found in this category.</p>}
       </section>
     </main>
   );

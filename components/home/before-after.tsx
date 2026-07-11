@@ -1,0 +1,8 @@
+'use client';
+
+import { useState } from 'react';
+
+export function BeforeAfter() {
+  const [position, setPosition] = useState(54);
+  return <div className="relative aspect-[16/10] overflow-hidden rounded-[1.5rem] bg-ink shadow-luxe"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1600&q=85" alt="Interior with ambient lighting" className="absolute inset-0 h-full w-full object-cover opacity-60 grayscale"/><div className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: `${position}%` }}><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85" alt="Interior transformed with statement lighting" className="h-full max-w-none w-[calc(100vw-2.5rem)] object-cover sm:w-[720px] lg:w-[800px]"/></div><div className="pointer-events-none absolute inset-y-0 w-px bg-white" style={{ left: `${position}%` }}><span className="absolute left-1/2 top-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/30 bg-ink/80 text-[9px] font-bold text-white backdrop-blur">↔</span></div><div className="absolute left-5 top-5 rounded-full bg-ink/70 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[.14em] text-white backdrop-blur">Before</div><div className="absolute right-5 top-5 rounded-full bg-champagne px-3 py-1.5 text-[9px] font-bold uppercase tracking-[.14em] text-ink">After</div><input aria-label="Compare before and after lighting" type="range" min="0" max="100" value={position} onChange={(event) => setPosition(Number(event.target.value))} className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"/></div>;
+}
