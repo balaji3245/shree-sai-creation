@@ -75,7 +75,7 @@ function ShopContent() {
 
     // Category match
     if (selectedCategory !== "All") {
-      result = result.filter((p) => p.category === selectedCategory);
+      result = result.filter((p) => p.category.toLowerCase() === selectedCategory.toLowerCase());
     }
 
     // Material match
