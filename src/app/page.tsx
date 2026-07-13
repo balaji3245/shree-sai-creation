@@ -170,7 +170,7 @@ export default function HomePage() {
             </p>
             
             {/* Bold serif title */}
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-[0.05em] mb-6 max-w-xl">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-[0.05em] mb-6 max-w-xl">
               {HERO_SLIDES[currentSlide].headline}
             </h1>
             
@@ -183,16 +183,16 @@ export default function HomePage() {
             </p>
 
             {/* Two Call to Actions */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 mt-2">
               <Link
                 href={HERO_SLIDES[currentSlide].cta1.href}
-                className="bg-[#C9A96E] hover:bg-[#E8D5A3] text-black font-semibold text-[10px] tracking-[0.25em] px-8 py-3.5 transition-all duration-300 rounded-none shadow-lg shadow-black/30 text-center"
+                className="w-full sm:w-auto bg-[#C9A96E] hover:bg-[#E8D5A3] text-black font-semibold text-[10px] tracking-[0.25em] px-8 py-4 transition-all duration-300 rounded-none shadow-lg shadow-black/30 text-center"
               >
                 {HERO_SLIDES[currentSlide].cta1.label}
               </Link>
               <Link
                 href={HERO_SLIDES[currentSlide].cta2.href}
-                className="border border-white/60 hover:border-white text-white font-semibold text-[10px] tracking-[0.25em] px-8 py-3.5 transition-all duration-300 rounded-none text-center bg-white/5 backdrop-blur-sm"
+                className="w-full sm:w-auto border border-white/60 hover:border-white text-white font-semibold text-[10px] tracking-[0.25em] px-8 py-4 transition-all duration-300 rounded-none text-center bg-white/5 backdrop-blur-sm"
               >
                 {HERO_SLIDES[currentSlide].cta2.label}
               </Link>
@@ -253,7 +253,7 @@ export default function HomePage() {
         <div className="relative flex flex-col items-center mb-12 sm:mb-16">
           <div className="text-center space-y-3">
             <p className="text-xs sm:text-sm tracking-[0.35em] uppercase text-[#C9A96E] font-semibold">Our Collections</p>
-            <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-wide">Shop By Category</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-wide">Shop By Category</h2>
           </div>
           
           {/* Arrows */}
@@ -293,7 +293,7 @@ export default function HomePage() {
             <Link
               key={idx}
               href={`/shop?category=${cat.slug}`}
-              className={`group flex flex-col overflow-hidden transition-all duration-500 w-[280px] sm:w-[300px] shrink-0 snap-start rounded-2xl border ${
+              className={`group flex flex-col overflow-hidden transition-all duration-500 w-[75vw] sm:w-[280px] lg:w-[300px] shrink-0 snap-start rounded-2xl border ${
                 theme === "dark" 
                   ? "bg-[#0a0a0a] border-white/5 hover:border-[#C9A96E]/40" 
                   : "bg-white border-black/5 hover:border-[#C9A96E]/40 hover:shadow-xl hover:shadow-black/5"
@@ -356,7 +356,7 @@ export default function HomePage() {
         <div className="relative flex flex-col items-center mb-12 sm:mb-16">
           <div className="text-center space-y-3">
             <p className="text-xs sm:text-sm tracking-[0.35em] uppercase text-[#C9A96E] font-semibold">Featured Products</p>
-            <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-wide">Best Sellers</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-wide">Best Sellers</h2>
           </div>
           
           {/* Arrows */}
@@ -393,7 +393,7 @@ export default function HomePage() {
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {bestSellers.map(product => (
-              <div key={product.id} className="w-[280px] sm:w-[300px] shrink-0 snap-start">
+              <div key={product.id} className="w-[75vw] sm:w-[280px] lg:w-[300px] shrink-0 snap-start">
                 <ProductCard product={product} />
               </div>
             ))}

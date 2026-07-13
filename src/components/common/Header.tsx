@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Heart, Search, Menu, X, Trash2, Plus, Minus, ArrowRight, User, ChevronDown, LogOut } from "lucide-react";
+import { ShoppingBag, Heart, Search, Menu, X, Trash2, Plus, Minus, ArrowRight, User, ChevronDown, LogOut, Package, Settings, CreditCard, Compass, Sun, Moon } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { PRODUCTS } from "@/data/products";
 import { Logo } from "@/components/common/Logo";
@@ -89,6 +89,55 @@ export const Header: React.FC = () => {
     router.push("/");
   };
 
+  const isAuthPage = pathname === "/signin" || pathname === "/signup";
+
+  if (isAuthPage) {
+    return (
+      <header
+        className={`sticky top-0 left-0 w-full z-40 transition-all duration-500 border-b ${
+          scrolled
+            ? theme === "dark"
+              ? "bg-[#0a0a0a]/95 backdrop-blur-md border-white/8 shadow-[0_4px_30px_rgba(0,0,0,0.8)]"
+              : "bg-white/95 backdrop-blur-md border-black/8 shadow-[0_4px_30px_rgba(0,0,0,0.05)]"
+            : theme === "dark"
+              ? "bg-[#0a0a0a]/90 backdrop-blur-sm border-white/5"
+              : "bg-[#FAF8F5]/90 backdrop-blur-sm border-black/5"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-[85px]">
+            {/* ─── Logo ─── */}
+            <Link href="/" className="flex items-center select-none group py-1.5 shrink-0">
+              <Logo iconSize={32} />
+            </Link>
+
+            {/* Theme Toggle Only */}
+            <div className={`flex items-center ${theme === "dark" ? "text-white" : "text-black"}`}>
+              <button
+                onClick={toggleTheme}
+                className="p-2 opacity-60 hover:opacity-100 hover:text-[#C9A96E] transition-all duration-200 cursor-pointer"
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                  </svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
   return (
     <>
 
@@ -162,6 +211,20 @@ export const Header: React.FC = () => {
                 <Search size={16} />
               </button>
 
+              {/* Cart */}
+              <button
+                onClick={() => setIsCartOpen(true)}
+                className="relative p-2 opacity-60 hover:opacity-100 hover:text-[#C9A96E] transition-all duration-200"
+                aria-label="Cart"
+              >
+                <ShoppingBag size={16} />
+                {totalCartItems > 0 && (
+                  <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-[#C9A96E] text-[7.5px] text-black font-bold flex items-center justify-center rounded-full">
+                    {totalCartItems}
+                  </span>
+                )}
+              </button>
+
               {/* Profile */}
               <div className="relative">
                 <button
@@ -178,39 +241,236 @@ export const Header: React.FC = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.97 }}
                       transition={{ duration: 0.2 }}
-                      className={`absolute right-0 top-full mt-2 w-56 border shadow-2xl z-50 ${
-                        theme === "dark" ? "bg-[#141414] border-white/8 text-white" : "bg-white border-black/8 text-black"
+                      className={`absolute right-0 top-full mt-3 w-64 border shadow-2xl z-50 rounded-xl overflow-hidden ${
+                        theme === "dark" 
+                          ? "bg-[#0d0d0d] border-white/10 text-white shadow-black/80" 
+                          : "bg-white border-black/10 text-black shadow-black/5"
                       }`}
                     >
                       {user ? (
-                        <>
-                          <div className={`px-4 py-3 border-b ${theme === "dark" ? "border-white/5" : "border-black/5"}`}>
-                            <p className="text-[11px] font-medium truncate">{user.name}</p>
-                            <p className={`text-[10px] truncate ${theme === "dark" ? "text-white/40" : "text-black/40"}`}>{user.email}</p>
+                        <div className="flex flex-col">
+                          {/* User Header Info Card */}
+                          <div className={`p-4 flex items-center gap-3 border-b relative ${
+                            theme === "dark" ? "bg-white/3 border-white/5" : "bg-black/2 border-black/5"
+                          }`}>
+                            {/* Close button */}
+                            <button 
+                              onClick={() => setIsProfileOpen(false)}
+                              className="absolute top-2.5 right-2.5 p-1 opacity-40 hover:opacity-100 transition-opacity cursor-pointer"
+                              aria-label="Close profile menu"
+                            >
+                              <X size={12} />
+                            </button>
+
+                            <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 border border-[#C9A96E]/40 flex items-center justify-center font-serif text-sm font-semibold text-[#C9A96E] shrink-0">
+                              {user.name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-[11px] font-bold tracking-wide truncate">{user.name}</p>
+                              <p className={`text-[10px] truncate ${theme === "dark" ? "text-white/40" : "text-black/40"}`}>{user.email}</p>
+                              <span className="inline-block mt-1 text-[8px] font-bold tracking-widest uppercase bg-[#C9A96E]/15 border border-[#C9A96E]/20 text-[#C9A96E] px-1.5 py-0.5 rounded-sm">
+                                {user.role} Member
+                              </span>
+                            </div>
                           </div>
-                          <div className="py-1.5">
-                            <button
-                              onClick={handleLogout}
-                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-[10px] tracking-wider uppercase text-left transition-colors ${
-                                theme === "dark"
-                                  ? "text-white/50 hover:text-red-400 hover:bg-white/3"
-                                  : "text-black/50 hover:text-red-600 hover:bg-black/3"
+
+                          {/* Quick Links Section */}
+                          <div className={`p-2 space-y-0.5 border-b ${theme === "dark" ? "border-white/5" : "border-black/5"}`}>
+                            <Link 
+                              href="/account?tab=dashboard" 
+                              onClick={() => setIsProfileOpen(false)}
+                              className={`flex items-center gap-3 px-3 py-2 text-[10px] tracking-wider uppercase rounded-md transition-colors ${
+                                theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
                               }`}
                             >
-                              <LogOut size={12} /> Sign Out
+                              <User size={13} className="text-[#C9A96E]" />
+                              My Dashboard
+                            </Link>
+                            <Link 
+                              href="/account?tab=orders" 
+                              onClick={() => setIsProfileOpen(false)}
+                              className={`flex items-center gap-3 px-3 py-2 text-[10px] tracking-wider uppercase rounded-md transition-colors ${
+                                theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
+                              }`}
+                            >
+                              <Package size={13} className="text-[#C9A96E]" />
+                              Order History
+                            </Link>
+                            <Link 
+                              href="/account?tab=addresses" 
+                              onClick={() => setIsProfileOpen(false)}
+                              className={`flex items-center gap-3 px-3 py-2 text-[10px] tracking-wider uppercase rounded-md transition-colors ${
+                                theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
+                              }`}
+                            >
+                              <CreditCard size={13} className="text-[#C9A96E]" />
+                              Billing & Addresses
+                            </Link>
+                          </div>
+
+                          {/* Shopping Shortcuts (Wishlist & Cart) */}
+                          <div className={`p-2 space-y-0.5 border-b ${theme === "dark" ? "border-white/5" : "border-black/5"}`}>
+                            <button
+                              onClick={() => { setIsWishlistOpen(true); setIsProfileOpen(false); }}
+                              className={`w-full flex items-center justify-between px-3 py-2 text-[10px] tracking-wider uppercase rounded-md transition-colors ${
+                                theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
+                              }`}
+                            >
+                              <span className="flex items-center gap-3">
+                                <Heart size={13} className="text-[#C9A96E]" />
+                                Wishlist
+                              </span>
+                              {wishlist.length > 0 && (
+                                <span className="bg-[#C9A96E]/15 border border-[#C9A96E]/30 text-[#C9A96E] text-[8px] font-bold px-1.5 py-0.5 rounded-sm">
+                                  {wishlist.length} Items
+                                </span>
+                              )}
+                            </button>
+                            <button
+                              onClick={() => { setIsCartOpen(true); setIsProfileOpen(false); }}
+                              className={`w-full flex items-center justify-between px-3 py-2 text-[10px] tracking-wider uppercase rounded-md transition-colors ${
+                                theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
+                              }`}
+                            >
+                              <span className="flex items-center gap-3">
+                                <ShoppingBag size={13} className="text-[#C9A96E]" />
+                                Shopping Bag
+                              </span>
+                              {totalCartItems > 0 && (
+                                <span className="bg-[#C9A96E] text-black text-[8px] font-bold px-1.5 py-0.5 rounded-sm">
+                                  {totalCartItems} Items
+                                </span>
+                              )}
                             </button>
                           </div>
-                        </>
+
+                          {/* Settings & Sign Out */}
+                          <div className="p-2 space-y-0.5">
+                            <Link 
+                              href="/account?tab=settings" 
+                              onClick={() => setIsProfileOpen(false)}
+                              className={`flex items-center gap-3 px-3 py-2 text-[10px] tracking-wider uppercase rounded-md transition-colors ${
+                                theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
+                              }`}
+                            >
+                              <Settings size={13} className="text-[#C9A96E]" />
+                              Settings
+                            </Link>
+                            <button
+                              onClick={toggleTheme}
+                              className={`w-full flex items-center gap-3 px-3 py-2 text-[10px] tracking-wider uppercase rounded-md transition-colors ${
+                                theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
+                              }`}
+                            >
+                              {theme === "dark" ? (
+                                <>
+                                  <Sun size={13} className="text-[#C9A96E]" />
+                                  Light Mode
+                                </>
+                              ) : (
+                                <>
+                                  <Moon size={13} className="text-[#C9A96E]" />
+                                  Dark Mode
+                                </>
+                              )}
+                            </button>
+                            <button
+                              onClick={handleLogout}
+                              className={`w-full flex items-center gap-3 px-3 py-2 text-[10px] tracking-wider uppercase rounded-md text-left transition-colors ${
+                                theme === "dark"
+                                  ? "text-red-400/80 hover:text-red-400 hover:bg-red-500/5"
+                                  : "text-red-600/80 hover:text-red-600 hover:bg-red-500/5"
+                              }`}
+                            >
+                              <LogOut size={13} /> 
+                              Sign Out
+                            </button>
+                          </div>
+                        </div>
                       ) : (
-                        <div className="py-2">
-                          <Link href="/signin" onClick={() => setIsProfileOpen(false)} className={`block px-4 py-2.5 text-[10px] tracking-wider uppercase transition-colors ${
-                            theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
+                        <div className="flex flex-col">
+                          {/* Welcome Header */}
+                          <div className={`p-4 border-b text-center relative ${
+                            theme === "dark" ? "bg-white/3 border-white/5" : "bg-black/2 border-black/5"
                           }`}>
-                            Sign In
-                          </Link>
-                          <Link href="/signup" onClick={() => setIsProfileOpen(false)} className="block px-4 py-2.5 text-[10px] tracking-wider uppercase text-[#C9A96E] hover:bg-black/3 transition-colors">
-                            Create Account
-                          </Link>
+                            {/* Close button */}
+                            <button 
+                              onClick={() => setIsProfileOpen(false)}
+                              className="absolute top-2.5 right-2.5 p-1 opacity-40 hover:opacity-100 transition-opacity cursor-pointer"
+                              aria-label="Close profile menu"
+                            >
+                              <X size={12} />
+                            </button>
+
+                            <p className="text-[10px] font-bold tracking-widest uppercase text-[#C9A96E] mb-1">Welcome to Shree Sai</p>
+                            <p className={`text-[9px] leading-relaxed ${theme === "dark" ? "text-white/50" : "text-black/50"}`}>
+                              Login to unlock premium custom ordering & tracking details.
+                            </p>
+                          </div>
+
+                          {/* Primary Actions */}
+                          <div className="p-3 space-y-2">
+                            <Link 
+                              href="/signin" 
+                              onClick={() => setIsProfileOpen(false)} 
+                              className="block w-full text-center bg-[#C9A96E] hover:bg-[#E8D5A3] text-black font-semibold text-[9px] tracking-[0.25em] py-2.5 transition-colors uppercase"
+                            >
+                              Sign In
+                            </Link>
+                            <Link 
+                              href="/signup" 
+                              onClick={() => setIsProfileOpen(false)} 
+                              className={`block w-full text-center border font-semibold text-[9px] tracking-[0.25em] py-2.5 transition-colors uppercase ${
+                                theme === "dark"
+                                  ? "border-white/10 hover:border-white text-white bg-white/3"
+                                  : "border-black/10 hover:border-black text-black bg-black/3"
+                              }`}
+                            >
+                              Create Account
+                            </Link>
+                          </div>
+
+                          {/* Helper Links */}
+                          <div className={`p-2 border-t space-y-0.5 ${theme === "dark" ? "border-white/5" : "border-black/5"}`}>
+                            <Link 
+                              href="/account?tab=orders" 
+                              onClick={() => setIsProfileOpen(false)}
+                              className={`flex items-center gap-3 px-3 py-2 text-[10px] tracking-wider uppercase rounded-md transition-colors ${
+                                theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
+                              }`}
+                            >
+                              <Package size={13} className="text-[#C9A96E]/70" />
+                              Track Order
+                            </Link>
+                            <button
+                              onClick={toggleTheme}
+                              className={`w-full flex items-center gap-3 px-3 py-2 text-[10px] tracking-wider uppercase rounded-md transition-colors ${
+                                theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
+                              }`}
+                            >
+                              {theme === "dark" ? (
+                                <>
+                                  <Sun size={13} className="text-[#C9A96E]/70" />
+                                  Light Mode
+                                </>
+                              ) : (
+                                <>
+                                  <Moon size={13} className="text-[#C9A96E]/70" />
+                                  Dark Mode
+                                </>
+                              )}
+                            </button>
+                            <Link 
+                              href="/about" 
+                              onClick={() => setIsProfileOpen(false)}
+                              className={`flex items-center gap-3 px-3 py-2 text-[10px] tracking-wider uppercase rounded-md transition-colors ${
+                                theme === "dark" ? "text-white/60 hover:text-white hover:bg-white/3" : "text-black/60 hover:text-black hover:bg-black/3"
+                              }`}
+                            >
+                              <Compass size={13} className="text-[#C9A96E]/70" />
+                              About Custom Lighting
+                            </Link>
+                          </div>
                         </div>
                       )}
                     </motion.div>
@@ -218,53 +478,11 @@ export const Header: React.FC = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Wishlist */}
-              <button
-                onClick={() => setIsWishlistOpen(true)}
-                className="relative p-2 opacity-60 hover:opacity-100 hover:text-[#C9A96E] transition-all duration-200"
-                aria-label="Wishlist"
-              >
-                <Heart size={16} />
-                {wishlist.length > 0 && (
-                  <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-[#C9A96E] text-[7.5px] text-black font-bold flex items-center justify-center rounded-full">
-                    {wishlist.length}
-                  </span>
-                )}
-              </button>
 
-              {/* Cart */}
-              <button
-                onClick={() => setIsCartOpen(true)}
-                className="relative p-2 opacity-60 hover:opacity-100 hover:text-[#C9A96E] transition-all duration-200"
-                aria-label="Cart"
-              >
-                <ShoppingBag size={16} />
-                {totalCartItems > 0 && (
-                  <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-[#C9A96E] text-[7.5px] text-black font-bold flex items-center justify-center rounded-full">
-                    {totalCartItems}
-                  </span>
-                )}
-              </button>
 
-              {/* Theme Toggle */}
-              <button
-                onClick={toggleTheme}
-                className="ml-1 p-2 opacity-60 hover:opacity-100 hover:text-[#C9A96E] transition-all duration-200 cursor-pointer"
-                aria-label="Toggle theme"
-              >
-                {theme === "dark" ? (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                  </svg>
-                ) : (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                  </svg>
-                )}
-              </button>
+
+
+
             </div>
           </div>
         </div>

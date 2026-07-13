@@ -53,7 +53,7 @@ export default function SignUpPage() {
   const inputClass = "w-full bg-[#111] border border-white/8 text-white placeholder-white/20 p-3.5 pl-10 text-sm tracking-wide focus:border-[#C9A96E]/50 focus:outline-none transition-colors";
 
   return (
-    <div className="bg-[#0a0a0a] min-h-[85vh] text-white flex items-center justify-center py-16 px-4 font-sans relative overflow-hidden">
+    <div className="bg-[#0a0a0a] h-[calc(100vh-85px)] text-white flex items-center justify-center px-4 font-sans relative overflow-hidden">
       {/* Ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] rounded-full bg-[#C9A96E] blur-[180px] opacity-[0.03] pointer-events-none" />
 
@@ -202,10 +202,7 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        <div className="flex items-center justify-center gap-2 text-[8px] text-white/20 tracking-wider uppercase border-t border-white/5 pt-6">
-          <ShieldCheck size={12} className="text-[#C9A96E]/50" />
-          <span>256-bit SSL encrypted &amp; secured</span>
-        </div>
+
       </div>
     </div>
   );

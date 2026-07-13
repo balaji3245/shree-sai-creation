@@ -2,9 +2,11 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Logo } from "@/components/common/Logo";
 
 export const Footer: React.FC = () => {
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
@@ -16,6 +18,10 @@ export const Footer: React.FC = () => {
       setTimeout(() => setSubscribed(false), 5000);
     }
   };
+
+  if (pathname === "/signin" || pathname === "/signup") {
+    return null;
+  }
 
   return (
     <footer className="bg-[#060606] text-white/50 font-sans border-t border-white/5 pt-16 pb-8">

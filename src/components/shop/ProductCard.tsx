@@ -89,7 +89,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {/* Product Title */}
             <Link
               href={`/shop/${product.slug}`}
-              className={`font-serif text-xl sm:text-2xl font-semibold tracking-wide transition-colors duration-300 group-hover:text-[#C9A96E] line-clamp-2 leading-snug ${
+              className={`font-serif text-lg sm:text-xl md:text-2xl font-semibold tracking-wide transition-colors duration-300 group-hover:text-[#C9A96E] line-clamp-2 leading-snug ${
                 theme === "dark" ? "text-white" : "text-black"
               }`}
             >
