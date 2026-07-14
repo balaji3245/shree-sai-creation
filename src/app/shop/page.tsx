@@ -140,39 +140,16 @@ function ShopContent() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* 2. Unified Controls & Filters */}
-        <div className="flex flex-col xl:flex-row-reverse items-center justify-between gap-6 mb-8 mt-12 bg-black/40 p-4 border border-white/5 w-full">
+        <div className="flex flex-col xl:flex-row items-center justify-between gap-6 mb-8 mt-12 bg-black/40 p-4 border border-white/5 w-full">
           
-          {/* Search Input (Right) */}
-          <div className="flex items-center gap-3 w-full xl:w-auto">
-            {/* Filter Toggle Mobile */}
-            <button
-              onClick={() => setIsFilterDrawerOpen(true)}
-              className="lg:hidden flex items-center gap-2 border border-white/10 px-4 py-2 text-xs uppercase tracking-widest text-white/70 hover:text-white"
-            >
-              <SlidersHorizontal size={14} />
-              Filters
-            </button>
+          {/* Left Side: Count & Dropdown Filters */}
+          <div className="flex flex-wrap items-center gap-4 xl:gap-6 w-full xl:w-auto text-[9px] uppercase tracking-widest text-white/50">
+            
+            {/* Found Items Count */}
+            <span className="text-[10px] text-[#C5A880] font-medium mr-4 xl:mr-2">
+              Showing {filteredProducts.length} pieces
+            </span>
 
-            {/* Search Input */}
-            <div className="relative flex-1 md:w-72 flex items-center border border-white/10 bg-[#0d0d0d] px-3 py-2 focus-within:border-white/40 transition-colors">
-              <Search className="text-white/30 mr-2" size={14} />
-              <input
-                type="text"
-                placeholder="SEARCH SPECIFIC LIGHT..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-transparent text-[10px] tracking-widest uppercase text-white placeholder-white/20 border-none focus:outline-none focus:ring-0"
-              />
-              {searchQuery && (
-                <button onClick={() => setSearchQuery("")} className="text-white/40 hover:text-white">
-                  <X size={12} />
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* 4 Dropdown Filters (Middle) */}
-          <div className="flex flex-wrap items-center justify-center gap-4 xl:gap-6 w-full xl:w-auto xl:flex-1 text-[9px] uppercase tracking-widest text-white/50 border-t border-b border-white/5 py-4 xl:border-none xl:py-0">
             {/* Category Filter */}
             <div className="flex items-center gap-2">
               <span>Category:</span>
@@ -234,14 +211,35 @@ function ShopContent() {
             </div>
           </div>
 
-          {/* Sort, View & Count (Left) */}
-          <div className="flex flex-wrap items-center justify-between xl:justify-start gap-4 xl:gap-6 w-full xl:w-auto text-xs uppercase tracking-widest">
-            {/* Found Items Count */}
-            <span className="text-[10px] text-white/40 font-medium">
-              Showing {filteredProducts.length} pieces
-            </span>
+          {/* Right Side: Search */}
+          <div className="flex items-center gap-3 w-full xl:w-auto">
+            {/* Filter Toggle Mobile */}
+            <button
+              onClick={() => setIsFilterDrawerOpen(true)}
+              className="lg:hidden flex items-center gap-2 border border-white/10 px-4 py-2 text-xs uppercase tracking-widest text-white/70 hover:text-white"
+            >
+              <SlidersHorizontal size={14} />
+              Filters
+            </button>
 
+            {/* Search Input */}
+            <div className="relative flex-1 md:w-72 flex items-center border border-white/10 bg-[#0d0d0d] px-3 py-2 focus-within:border-white/40 transition-colors">
+              <Search className="text-white/30 mr-2" size={14} />
+              <input
+                type="text"
+                placeholder="SEARCH SPECIFIC LIGHT..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-transparent text-[10px] tracking-widest uppercase text-white placeholder-white/20 border-none focus:outline-none focus:ring-0"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery("")} className="text-white/40 hover:text-white">
+                  <X size={12} />
+                </button>
+              )}
+            </div>
           </div>
+
         </div>
 
         {/* 3. Active Filters Chip Bar */}
