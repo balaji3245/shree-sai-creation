@@ -1,7 +1,23 @@
 "use client";
 
 import React, { useState } from "react";
-import { Bot, X, Send } from "lucide-react";
+import { X, Send } from "lucide-react";
+
+const AiIcon = ({ size = 28, className = "" }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <path
+      d="M12 2C12 7.52285 16.4772 12 22 12C16.4772 12 12 16.4772 12 22C12 16.4772 7.52285 12 2 12C7.52285 12 12 7.52285 12 2Z"
+      fill="currentColor"
+    />
+  </svg>
+);
 
 export const FloatingAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +49,7 @@ export const FloatingAssistant = () => {
           <div className="flex items-center justify-between bg-[#0f0f0f] border-b border-white/5 px-4 py-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-[#C5A880] text-black flex items-center justify-center">
-                <Bot size={18} strokeWidth={1.5} />
+                <AiIcon size={16} />
               </div>
               <h3 className="text-xs uppercase tracking-widest text-[#C5A880] font-semibold">AI Assistant</h3>
             </div>
@@ -86,7 +102,7 @@ export const FloatingAssistant = () => {
         className="fixed bottom-24 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#C5A880] text-[#0a0a0a] rounded-full shadow-lg hover:scale-110 hover:shadow-xl hover:shadow-[#C5A880]/30 transition-all duration-300 animate-fade-up delay-100"
         aria-label="Toggle AI Assistant"
       >
-        {isOpen ? <X size={28} strokeWidth={1.5} /> : <Bot size={28} strokeWidth={1.5} />}
+        {isOpen ? <X size={28} strokeWidth={1.5} /> : <AiIcon size={24} />}
       </button>
     </>
   );
