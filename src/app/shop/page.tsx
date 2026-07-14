@@ -212,9 +212,10 @@ function ShopContent() {
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Horizontal Categories */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-4 mt-2 border-t border-white/5 w-full">
+        {/* Horizontal Categories */}
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-4 mt-2 border-t border-white/5 w-full">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
