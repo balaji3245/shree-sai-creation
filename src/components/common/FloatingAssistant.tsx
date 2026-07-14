@@ -23,14 +23,14 @@ const AiIcon = ({ size = 28, className = "" }) => (
 export const FloatingAssistant = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-
-  if (pathname === "/signin" || pathname === "/signup") {
-    return null;
-  }
   const [messages, setMessages] = useState([
     { role: "bot", text: "Hello! Welcome to Shree Sai Creation. How can I assist you with our luxury lighting collection today?" }
   ]);
   const [input, setInput] = useState("");
+
+  if (pathname === "/signin" || pathname === "/signup") {
+    return null;
+  }
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
