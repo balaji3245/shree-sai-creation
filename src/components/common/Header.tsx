@@ -15,9 +15,11 @@ import { getStoredProducts } from "@/utils/db";
 // ─── Category previews for mega menu ─────────────────────────
 const MEGA_CATEGORIES = [
   { name: "Chandelier", count: 24, img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80", slug: "Chandelier" },
-  { name: "Internal pendant lights", count: 18, img: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=300&q=80", slug: "Internal pendant lights" },
   { name: "Indoor wall lamps", count: 20, img: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=300&q=80", slug: "Indoor wall lamps" },
+  { name: "Linear lights", count: 12, img: "https://images.unsplash.com/photo-1513506003901-1e6a229e9d15?w=300&q=80", slug: "Linear lights" },
   { name: "Ceiling lights", count: 16, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300&q=80", slug: "Ceiling lights" },
+  { name: "Internal pendant lights", count: 18, img: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=300&q=80", slug: "Internal pendant lights" },
+  { name: "Outdoor wall lamps", count: 14, img: "https://images.unsplash.com/photo-1581428982868-e410dd187a90?w=300&q=80", slug: "Outdoor wall lamps" },
 ];
 
 export const Header: React.FC = () => {
@@ -619,7 +621,7 @@ export const Header: React.FC = () => {
                       ))}
                     </div>
                   </div>
-                  <div className="col-span-4 grid grid-cols-4 gap-4">
+                  <div className="col-span-4 grid grid-cols-3 gap-6">
                     {MEGA_CATEGORIES.map(cat => (
                       <Link
                         key={cat.slug}
