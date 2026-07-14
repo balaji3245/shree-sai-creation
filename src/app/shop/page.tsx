@@ -140,7 +140,8 @@ function ShopContent() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* 2. Controls & Search Bar */}
-        <div className="flex flex-col md:flex-row-reverse justify-between items-center gap-6 mb-8 mt-12 bg-black/40 p-4 border border-white/5">
+        <div className="flex flex-col gap-6 mb-8 mt-12 bg-black/40 p-4 border border-white/5">
+          <div className="flex flex-col md:flex-row-reverse justify-between items-center gap-6 w-full">
           <div className="flex items-center gap-3 w-full md:w-auto">
             {/* Filter Toggle Mobile */}
             <button
@@ -211,6 +212,23 @@ function ShopContent() {
               </div>
             </div>
           </div>
+
+          {/* Horizontal Categories */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-4 mt-2 border-t border-white/5 w-full">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`text-[9px] uppercase tracking-[0.2em] px-4 py-2 border transition-all ${
+                  selectedCategory === cat 
+                    ? "border-[#C5A880] text-[#C5A880] bg-[#C5A880]/10" 
+                    : "border-transparent text-white/50 hover:text-white hover:border-white/20"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* 3. Active Filters Chip Bar */}
@@ -271,25 +289,7 @@ function ShopContent() {
         <div className="flex gap-8 items-start flex-col lg:flex-row-reverse">
           {/* Desktop Left Sidebar Filters */}
           <aside className="hidden lg:block w-64 flex-shrink-0 bg-[#0d0d0d] border border-white/5 p-6 space-y-8 uppercase tracking-widest text-[10px]">
-            {/* Category Filter */}
-            <div className="space-y-3.5">
-              <h4 className="font-serif text-xs text-[#C5A880] tracking-wider mb-2 pb-1.5 border-b border-white/5">
-                Categories
-              </h4>
-              <div className="flex flex-col gap-2.5">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`text-left hover:text-white transition-all text-white/50 ${
-                      selectedCategory === cat ? "text-[#C5A880] font-semibold" : ""
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
+
 
             {/* Price Tiers Filter */}
             <div className="space-y-3.5">
@@ -480,28 +480,7 @@ function ShopContent() {
               </button>
             </div>
 
-            {/* Category Filter Mobile */}
-            <div className="space-y-3">
-              <h4 className="font-serif text-[10px] text-[#C5A880] tracking-wider pb-1 border-b border-white/5">
-                Categories
-              </h4>
-              <div className="flex flex-col gap-2">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => {
-                      setSelectedCategory(cat);
-                      setIsFilterDrawerOpen(false);
-                    }}
-                    className={`text-left text-white/60 hover:text-white ${
-                      selectedCategory === cat ? "text-[#C5A880] font-semibold" : ""
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
+
 
             {/* Price Tiers Filter Mobile */}
             <div className="space-y-3">
