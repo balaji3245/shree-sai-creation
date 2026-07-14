@@ -5,6 +5,7 @@ import { CartProvider } from "@/context/CartContext";
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
 import { FloatingWhatsApp } from "@/components/common/FloatingWhatsApp";
+import { FloatingAssistant } from "@/components/common/FloatingAssistant";
 import { LuxuryLoader } from "@/components/animation/LuxuryLoader";
 import { PageTransition } from "@/components/animation/PageTransition";
 import { ShowroomSpotlight } from "@/components/common/ShowroomSpotlight";
@@ -66,6 +67,7 @@ export default function RootLayout({
           <Footer />
 
           {/* Floating Action Buttons */}
+          <FloatingAssistant />
           <FloatingWhatsApp />
         </CartProvider>
       </body>
