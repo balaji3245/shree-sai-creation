@@ -230,6 +230,54 @@ function ShopContent() {
               </button>
             ))}
           </div>
+
+          {/* Sub Filters: Price, Material, Finish */}
+          <div className="flex flex-wrap items-center justify-center gap-6 pt-4 border-t border-white/5 w-full text-[9px] uppercase tracking-widest text-white/50">
+            {/* Price Filter */}
+            <div className="flex items-center gap-2">
+              <span>Price:</span>
+              <select
+                value={priceTier}
+                onChange={(e) => setPriceTier(e.target.value)}
+                className="bg-transparent text-white border-b border-white/10 pb-0.5 outline-none cursor-pointer focus:border-[#C5A880]"
+              >
+                <option value="All" className="bg-[#0d0d0d]">All Prices</option>
+                <option value="under-5000" className="bg-[#0d0d0d]">Under ₹5,000</option>
+                <option value="5000-20000" className="bg-[#0d0d0d]">₹5,000 – ₹20,000</option>
+                <option value="over-20000" className="bg-[#0d0d0d]">Over ₹20,000</option>
+              </select>
+            </div>
+
+            {/* Material Filter */}
+            <div className="flex items-center gap-2">
+              <span>Material:</span>
+              <select
+                value={selectedMaterial}
+                onChange={(e) => setSelectedMaterial(e.target.value)}
+                className="bg-transparent text-white border-b border-white/10 pb-0.5 outline-none cursor-pointer focus:border-[#C5A880]"
+              >
+                <option value="All" className="bg-[#0d0d0d]">All Materials</option>
+                {MATERIALS.map(mat => (
+                  <option key={mat} value={mat} className="bg-[#0d0d0d]">{mat}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Finish Filter */}
+            <div className="flex items-center gap-2">
+              <span>Finish:</span>
+              <select
+                value={selectedFinish}
+                onChange={(e) => setSelectedFinish(e.target.value)}
+                className="bg-transparent text-white border-b border-white/10 pb-0.5 outline-none cursor-pointer focus:border-[#C5A880]"
+              >
+                <option value="All" className="bg-[#0d0d0d]">All Finishes</option>
+                {FINISHES.map(fin => (
+                  <option key={fin} value={fin} className="bg-[#0d0d0d]">{fin}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
 
         {/* 3. Active Filters Chip Bar */}
@@ -286,83 +334,12 @@ function ShopContent() {
           </div>
         )}
 
-        {/* 4. Desktop Sidebar and Main Product Grid */}
-        <div className="flex gap-8 items-start flex-col lg:flex-row-reverse">
-          {/* Desktop Left Sidebar Filters */}
-          <aside className="hidden lg:block w-64 flex-shrink-0 bg-[#0d0d0d] border border-white/5 p-6 space-y-8 uppercase tracking-widest text-[10px]">
-
-
-            {/* Price Tiers Filter */}
-            <div className="space-y-3.5">
-              <h4 className="font-serif text-xs text-[#C5A880] tracking-wider mb-2 pb-1.5 border-b border-white/5">
-                Price Tiers
-              </h4>
-              <div className="flex flex-col gap-2.5">
-                {[
-                  { id: "All", name: "All Prices" },
-                  { id: "under-5000", name: "Under ₹5,000" },
-                  { id: "5000-20000", name: "₹5,000 – ₹20,000" },
-                  { id: "over-20000", name: "Over ₹20,000" },
-                ].map((tier) => (
-                  <button
-                    key={tier.id}
-                    onClick={() => setPriceTier(tier.id)}
-                    className={`text-left hover:text-white transition-all text-white/50 ${
-                      priceTier === tier.id ? "text-[#C5A880] font-semibold" : ""
-                    }`}
-                  >
-                    {tier.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Material Filter */}
-            <div className="space-y-3.5">
-              <h4 className="font-serif text-xs text-[#C5A880] tracking-wider mb-2 pb-1.5 border-b border-white/5">
-                Materials
-              </h4>
-              <div className="flex flex-col gap-2.5">
-                {MATERIALS.map((mat) => (
-                  <button
-                    key={mat}
-                    onClick={() => setSelectedMaterial(mat)}
-                    className={`text-left hover:text-white transition-all text-white/50 ${
-                      selectedMaterial === mat ? "text-[#C5A880] font-semibold" : ""
-                    }`}
-                  >
-                    {mat}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Metal Finish Filter */}
-            <div className="space-y-3.5">
-              <h4 className="font-serif text-xs text-[#C5A880] tracking-wider mb-2 pb-1.5 border-b border-white/5">
-                Metal Finishes
-              </h4>
-              <div className="flex flex-col gap-2.5 font-light">
-                {FINISHES.map((fin) => (
-                  <button
-                    key={fin}
-                    onClick={() => setSelectedFinish(fin)}
-                    className={`text-left hover:text-white transition-all text-white/50 ${
-                      selectedFinish === fin ? "text-[#C5A880] font-semibold" : ""
-                    }`}
-                  >
-                    {fin}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </aside>
-
-          {/* Right Product Grid */}
+        {/* 4. Main Product Grid */}
+        <div className="w-full">
           <div className="flex-1">
             {filteredProducts.length > 0 ? (
               layoutMode === "grid" ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}
