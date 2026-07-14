@@ -45,14 +45,14 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-85px)] bg-[rgb(var(--background))] text-[rgb(var(--foreground))] flex flex-col md:flex-row font-sans">
+    <div className="min-h-[calc(100vh-85px)] md:h-[calc(100vh-85px)] bg-[rgb(var(--background))] text-[rgb(var(--foreground))] flex flex-col md:flex-row font-sans md:overflow-hidden">
       
       {/* Left Side: Form Panel */}
-      <div className="w-full md:w-[45%] flex items-center justify-center p-8 md:p-12 lg:p-16 xl:p-24 relative overflow-hidden bg-gradient-to-b from-[rgb(var(--background))] to-[rgb(var(--surface))]">
+      <div className="w-full md:w-[45%] flex items-center justify-center p-8 md:p-10 lg:p-12 relative overflow-y-auto md:h-full bg-gradient-to-b from-[rgb(var(--background))] to-[rgb(var(--surface))] py-12">
         {/* Background ambient glow */}
         <div className="absolute top-1/4 left-1/4 w-[80%] h-[50%] rounded-full bg-[rgb(var(--gold))] blur-[150px] opacity-[0.03] pointer-events-none" />
 
-        <div className="w-full max-w-md space-y-10 relative z-10 animate-fade-up">
+        <div className="w-full max-w-md space-y-6 relative z-10 animate-fade-up">
           {/* Header */}
           <div className="space-y-4">
             <span className="text-[9px] tracking-[0.45em] uppercase text-[rgb(var(--gold))] font-medium block">
