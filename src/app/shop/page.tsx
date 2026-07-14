@@ -34,6 +34,8 @@ function ShopContent() {
   const [sortOption, setSortOption] = useState("default"); // default, priceAsc, priceDesc, rating
   const [layoutMode, setLayoutMode] = useState<"grid" | "list">("grid");
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
 
   // Synchronize URL parameters if they change
   useEffect(() => {
@@ -66,6 +68,11 @@ function ShopContent() {
       searchQuery !== ""
     );
   }, [selectedCategory, selectedMaterial, selectedFinish, priceTier, searchQuery]);
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategory, selectedMaterial, selectedFinish, priceTier, sortOption]);
 
   // Filtering products
   const filteredProducts = useMemo(() => {
@@ -125,7 +132,14 @@ function ShopContent() {
     }
 
     return result;
-  }, [searchQuery, selectedCategory, selectedMaterial, selectedFinish, priceTier, sortOption]);
+  }, [products, searchQuery, selectedCategory, selectedMaterial, selectedFinish, priceTier, sortOption]);
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
+  
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProducts.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
 
   return (
     <div className="relative w-full bg-[#0a0a0a] min-h-screen text-white font-sans">
@@ -244,14 +258,14 @@ function ShopContent() {
             {filteredProducts.length > 0 ? (
               layoutMode === "grid" ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {filteredProducts.map((product) => (
+                  {paginatedProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}
                 </div>
               ) : (
                 /* List view layout */
                 <div className="space-y-6">
-                  {filteredProducts.map((p) => {
+                  {paginatedProducts.map((p) => {
                     const dPrice = p.price * (1 - p.discount / 100);
                     return (
                       <div
@@ -323,15 +337,29 @@ function ShopContent() {
             )}
 
             {/* Pagination Controls */}
-            {filteredProducts.length > 0 && (
+            {totalPages > 1 && (
               <div className="mt-12 flex justify-center items-center gap-4 text-xs tracking-widest">
-                <button className="px-4 py-2 border border-white/10 hover:border-white transition-colors text-white/40 hover:text-white disabled:opacity-30 disabled:pointer-events-none" disabled>
+                <button 
+                  onClick={() => {
+                    setCurrentPage(prev => Math.max(prev - 1, 1));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 border border-white/10 hover:border-white transition-colors text-white/40 hover:text-white disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                >
                   Prev
                 </button>
                 <span className="text-[10px] text-[#C5A880] font-medium font-sans">
-                  PAGE 1 OF 1
+                  PAGE {currentPage} OF {totalPages}
                 </span>
-                <button className="px-4 py-2 border border-white/10 hover:border-white transition-colors text-white/40 hover:text-white disabled:opacity-30 disabled:pointer-events-none" disabled>
+                <button 
+                  onClick={() => {
+                    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 border border-white/10 hover:border-white transition-colors text-white/40 hover:text-white disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                >
                   Next
                 </button>
               </div>
