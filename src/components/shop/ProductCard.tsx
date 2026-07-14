@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { Product } from "@/data/products";
-import { Heart, ShoppingBag, Eye, Star } from "lucide-react";
+import { Heart, ShoppingCart, Eye, Star } from "lucide-react";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
@@ -141,7 +141,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               }`}
               aria-label="Add to Bag"
             >
-              <ShoppingBag size={13} className="transition-transform duration-300 group-hover:scale-110" />
+              <ShoppingCart size={13} className="transition-transform duration-300 group-hover:scale-110" />
             </button>
           </div>
         </div>

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Heart, Search, Menu, X, Trash2, Plus, Minus, ArrowRight, User, ChevronDown, LogOut, Package, Settings, CreditCard, Compass, Sun, Moon } from "lucide-react";
+import { ShoppingCart, Heart, Search, Menu, X, Trash2, Plus, Minus, ArrowRight, User, ChevronDown, LogOut, Package, Settings, CreditCard, Compass, Sun, Moon } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { PRODUCTS } from "@/data/products";
 import { Logo } from "@/components/common/Logo";
@@ -292,7 +292,7 @@ export const Header: React.FC = () => {
                 className="relative p-2 opacity-60 hover:opacity-100 hover:text-[#C9A96E] transition-all duration-200"
                 aria-label="Cart"
               >
-                <ShoppingBag size={16} />
+                <ShoppingCart size={16} />
                 {totalCartItems > 0 && (
                   <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-[#C9A96E] text-[7.5px] text-black font-bold flex items-center justify-center rounded-full">
                     {totalCartItems}
@@ -408,7 +408,7 @@ export const Header: React.FC = () => {
                               }`}
                             >
                               <span className="flex items-center gap-3">
-                                <ShoppingBag size={13} className="text-[#C9A96E]" />
+                                <ShoppingCart size={13} className="text-[#C9A96E]" />
                                 Shopping Bag
                               </span>
                               {totalCartItems > 0 && (
@@ -641,7 +641,7 @@ export const Header: React.FC = () => {
               <div className="flex-1 overflow-y-auto px-6 py-4 space-y-5">
                 {cart.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
-                    <ShoppingBag size={32} className="text-white/10" />
+                    <ShoppingCart size={32} className="text-white/10" />
                     <p className="text-white/30 text-sm">Your cart is empty</p>
                     <button onClick={() => { setIsCartOpen(false); router.push("/shop"); }} className="btn-luxury text-[10px] px-6 py-3">
                       Explore Collection

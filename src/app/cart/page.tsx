@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, Percent } from "lucide-react";
+import { Trash2, Plus, Minus, ArrowRight, ShoppingCart, Percent } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function CartPage() {
@@ -221,7 +221,7 @@ export default function CartPage() {
         ) : (
           /* Empty cart state */
           <div className="py-24 text-center space-y-6 bg-[#0d0d0d] border border-white/5 max-w-xl mx-auto">
-            <ShoppingBag size={48} className="text-white/20 mx-auto" />
+            <ShoppingCart size={48} className="text-white/20 mx-auto" />
             <p className="text-xs text-white/40 uppercase tracking-widest font-light">
               Your shopping selection is currently empty
             </p>

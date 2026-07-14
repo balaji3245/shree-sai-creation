@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { Heart, Trash2, ShoppingBag } from "lucide-react";
+import { Heart, Trash2, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function WishlistPage() {
@@ -81,7 +81,7 @@ export default function WishlistPage() {
                         }}
                         className="text-[9px] tracking-[0.2em] uppercase text-white hover:text-[#C5A880] flex items-center gap-1 transition-colors font-sans font-semibold"
                       >
-                        <ShoppingBag size={11} />
+                        <ShoppingCart size={11} />
                         Add to Bag
                       </button>
                     </div>
