@@ -29,7 +29,7 @@ const MOCK_ORDERS = [
     items: [{ name: "Shree Sai Royale Chandelier", qty: 1, price: 4850 }],
     steps: [
       { label: "Order Placed", date: "July 10, 2026", done: true, current: true },
-      { label: "Delivered", date: "Pending", done: false, current: false }
+      { label: "Delivered", date: "Est. July 15, 2026", done: false, current: false }
     ]
   },
   {
