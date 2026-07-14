@@ -24,7 +24,7 @@ export const Footer: React.FC = () => {
   }
 
   return (
-    <footer className="bg-[#060606] text-white/50 font-sans border-t border-white/5 pt-16 pb-8">
+    <footer className="bg-[#070707] text-white/50 font-sans border-t border-white/5 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Footer Grid */}
@@ -148,7 +148,7 @@ export const Footer: React.FC = () => {
                 Thank you for subscribing!
               </p>
             ) : (
-              <form onSubmit={handleSubmit} className="flex bg-[#0f0f0f] border border-white/10 focus-within:border-[#C9A96E]/50 transition-colors duration-300">
+              <form onSubmit={handleSubmit} className="flex bg-[#0d0d0d] border border-white/10 focus-within:border-[#C9A96E]/50 transition-colors duration-300">
                 <input
                   type="email"
                   placeholder="Enter your email"
