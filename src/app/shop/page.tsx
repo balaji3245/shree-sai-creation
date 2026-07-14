@@ -146,7 +146,7 @@ function ShopContent() {
           <div className="flex items-center shrink-0">
             <button
               onClick={() => setIsFilterDrawerOpen(true)}
-              className="flex items-center gap-2 border border-white/10 px-3 md:px-4 py-2 text-[10px] md:text-xs uppercase tracking-widest text-white/70 hover:text-white transition-colors"
+              className="flex items-center gap-2 border border-white/10 rounded-full px-3 md:px-4 py-2 text-[10px] md:text-xs uppercase tracking-widest text-white/70 hover:text-white transition-colors"
             >
               <SlidersHorizontal size={14} />
               Filters
@@ -157,7 +157,7 @@ function ShopContent() {
           <div className="flex items-center flex-1 max-w-md justify-end">
 
             {/* Search Input */}
-            <div className="relative w-full sm:w-72 flex items-center border border-white/10 bg-[#0d0d0d] px-3 py-2 focus-within:border-white/40 transition-colors">
+            <div className="relative w-full sm:w-72 flex items-center border border-white/10 rounded-full bg-[#0d0d0d] px-4 py-2 focus-within:border-white/40 transition-colors">
               <Search className="text-white/30 mr-2" size={14} />
               <input
                 type="text"
