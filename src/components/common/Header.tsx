@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Heart, Search, Menu, X, Trash2, Plus, Minus, ArrowRight, User, ChevronDown, LogOut, Package, Settings, CreditCard, Compass, Sun, Moon } from "lucide-react";
+import { ShoppingCart, Heart, Search, Menu, X, Trash2, Plus, Minus, ArrowRight, ArrowLeft, User, ChevronDown, LogOut, Package, Settings, CreditCard, Compass, Sun, Moon } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { PRODUCTS, Product } from "@/data/products";
 import { Logo } from "@/components/common/Logo";
@@ -182,7 +182,7 @@ export const Header: React.FC = () => {
             </Link>
 
             {/* ─── Desktop Navigation ─── */}
-            {pathname !== "/admin" && (
+            {pathname !== "/admin" ? (
               <nav className="hidden md:flex items-center h-full mx-6" onMouseLeave={() => setHoveredNav(null)}>
                 {navLinks.map(link => (
                   <div key={link.name} className="relative h-full flex items-center">
@@ -208,6 +208,20 @@ export const Header: React.FC = () => {
                     </Link>
                   </div>
                 ))}
+              </nav>
+            ) : (
+              <nav className="hidden md:flex items-center h-full mx-6">
+                <Link
+                  href="/"
+                  className={`flex items-center gap-2 px-6 py-2.5 rounded-full border text-[9px] tracking-[0.25em] uppercase font-semibold transition-all duration-300 ${
+                    theme === "dark" 
+                      ? "border-white/20 text-white/80 hover:bg-white hover:text-black hover:scale-105" 
+                      : "border-black/20 text-black/80 hover:bg-black hover:text-white hover:scale-105"
+                  }`}
+                >
+                  <ArrowLeft size={12} />
+                  Back to Site
+                </Link>
               </nav>
             )}
 
