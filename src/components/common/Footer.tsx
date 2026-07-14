@@ -181,6 +181,10 @@ export const Footer: React.FC = () => {
                 <div className="w-3.5 h-3.5 rounded-full bg-[#EB001B] opacity-90" />
                 <div className="w-3.5 h-3.5 rounded-full bg-[#F79E1B] opacity-90 -ml-2" />
               </div>
+              {/* Stripe */}
+              <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm">
+                <span className="text-[8px] font-bold text-[#635BFF] font-sans tracking-tight">stripe</span>
+              </div>
               {/* Paypal */}
               <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm">
                 <span className="text-[8px] font-extrabold text-[#003087] italic tracking-tighter font-sans">PayPal</span>
@@ -188,10 +192,6 @@ export const Footer: React.FC = () => {
               {/* Apple Pay */}
               <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm">
                 <span className="text-[8px] font-bold text-black font-sans flex items-center"> Pay</span>
-              </div>
-              {/* Google Pay */}
-              <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm">
-                <span className="text-[8.5px] font-bold text-[#5F6368] font-sans tracking-tight flex items-center">G Pay</span>
               </div>
             </div>
           </div>
