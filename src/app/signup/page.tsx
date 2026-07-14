@@ -53,23 +53,23 @@ export default function SignUpPage() {
   const inputUnderlineClass = "w-full bg-transparent text-white placeholder-white/25 py-2.5 pl-8 text-sm tracking-wide focus:outline-none";
 
   return (
-    <div className="min-h-[calc(100vh-85px)] bg-[#0a0a0a] text-white flex flex-col md:flex-row font-sans">
+    <div className="min-h-[calc(100vh-85px)] bg-[rgb(var(--background))] text-[rgb(var(--foreground))] flex flex-col md:flex-row font-sans">
       
       {/* Left Side: Form Panel */}
-      <div className="w-full md:w-[45%] flex items-center justify-center p-8 md:p-12 lg:p-16 xl:p-24 relative overflow-hidden bg-gradient-to-b from-[#0a0a0a] to-[#0c0c0c]">
+      <div className="w-full md:w-[45%] flex items-center justify-center p-8 md:p-12 lg:p-16 xl:p-24 relative overflow-hidden bg-gradient-to-b from-[rgb(var(--background))] to-[rgb(var(--surface))]">
         {/* Background ambient glow */}
-        <div className="absolute top-1/4 left-1/4 w-[80%] h-[50%] rounded-full bg-[#C9A96E] blur-[150px] opacity-[0.02] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/4 w-[80%] h-[50%] rounded-full bg-[rgb(var(--gold))] blur-[150px] opacity-[0.03] pointer-events-none" />
 
         <div className="w-full max-w-md space-y-8 relative z-10 animate-fade-up">
           {/* Header */}
           <div className="space-y-4">
-            <span className="text-[9px] tracking-[0.45em] uppercase text-[#C9A96E] font-medium block">
+            <span className="text-[9px] tracking-[0.45em] uppercase text-[rgb(var(--gold))] font-medium block">
               House of Shree Sai Creation
             </span>
-            <h1 className="font-serif text-3xl lg:text-4xl tracking-widest text-white leading-tight">
+            <h1 className="font-serif text-3xl lg:text-4xl tracking-widest text-[rgb(var(--foreground))] leading-tight">
               Create Account
             </h1>
-            <p className="text-xs text-white/40 tracking-wider">
+            <p className="text-xs text-[rgb(var(--text-secondary))] tracking-wider">
               Join us to curate your custom premium lighting showroom.
             </p>
           </div>
@@ -81,7 +81,7 @@ export default function SignUpPage() {
             </div>
           )}
           {successMsg && (
-            <div className="border border-[#C9A96E]/20 bg-[#C9A96E]/5 text-[#C9A96E] p-4 text-xs tracking-wide text-center rounded-lg">
+            <div className="border border-[rgb(var(--gold))]/20 bg-[rgb(var(--gold))]/5 text-[rgb(var(--gold))] p-4 text-xs tracking-wide text-center rounded-lg">
               {successMsg}
             </div>
           )}
@@ -90,9 +90,9 @@ export default function SignUpPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Full Name */}
             <div className="space-y-1">
-              <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-white/40">Full Name *</label>
-              <div className="relative border-b border-white/10 focus-within:border-[#C9A96E] transition-colors py-1">
-                <User className="absolute left-1 top-3.5 text-white/20" size={14} />
+              <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-[rgb(var(--text-muted))]">Full Name *</label>
+              <div className="relative border-b border-[rgb(var(--border))] focus-within:border-[rgb(var(--gold))] transition-colors py-1">
+                <User className="absolute left-1 top-3.5 text-[rgb(var(--text-muted))]/40" size={14} />
                 <input
                   type="text"
                   placeholder="Artisan Name"
@@ -107,9 +107,9 @@ export default function SignUpPage() {
 
             {/* Email */}
             <div className="space-y-1">
-              <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-white/40">Email Address *</label>
-              <div className="relative border-b border-white/10 focus-within:border-[#C9A96E] transition-colors py-1">
-                <Mail className="absolute left-1 top-3.5 text-white/20" size={14} />
+              <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-[rgb(var(--text-muted))]">Email Address *</label>
+              <div className="relative border-b border-[rgb(var(--border))] focus-within:border-[rgb(var(--gold))] transition-colors py-1">
+                <Mail className="absolute left-1 top-3.5 text-[rgb(var(--text-muted))]/40" size={14} />
                 <input
                   type="email"
                   placeholder="yourname@domain.com"
@@ -124,9 +124,9 @@ export default function SignUpPage() {
 
             {/* Password */}
             <div className="space-y-1">
-              <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-white/40">Password *</label>
-              <div className="relative border-b border-white/10 focus-within:border-[#C9A96E] transition-colors py-1">
-                <Lock className="absolute left-1 top-3.5 text-white/20" size={14} />
+              <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-[rgb(var(--text-muted))]">Password *</label>
+              <div className="relative border-b border-[rgb(var(--border))] focus-within:border-[rgb(var(--gold))] transition-colors py-1">
+                <Lock className="absolute left-1 top-3.5 text-[rgb(var(--text-muted))]/40" size={14} />
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Min 6 characters"
@@ -136,7 +136,7 @@ export default function SignUpPage() {
                   required
                   disabled={isLoading}
                 />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-1 top-2.5 text-white/30 hover:text-white transition-colors" tabIndex={-1}>
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-1 top-2.5 text-[rgb(var(--text-muted))]/60 hover:text-[rgb(var(--foreground))] transition-colors" tabIndex={-1}>
                   {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
@@ -144,9 +144,9 @@ export default function SignUpPage() {
 
             {/* Confirm Password */}
             <div className="space-y-1">
-              <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-white/40">Confirm Password *</label>
-              <div className="relative border-b border-white/10 focus-within:border-[#C9A96E] transition-colors py-1">
-                <Lock className="absolute left-1 top-3.5 text-white/20" size={14} />
+              <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-[rgb(var(--text-muted))]">Confirm Password *</label>
+              <div className="relative border-b border-[rgb(var(--border))] focus-within:border-[rgb(var(--gold))] transition-colors py-1">
+                <Lock className="absolute left-1 top-3.5 text-[rgb(var(--text-muted))]/40" size={14} />
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Re-enter your password"
@@ -160,20 +160,20 @@ export default function SignUpPage() {
             </div>
 
             {/* Terms */}
-            <div className="flex items-start gap-3 text-[9px] text-white/40 leading-relaxed pt-2">
+            <div className="flex items-start gap-3 text-[9px] text-[rgb(var(--text-muted))] leading-relaxed pt-2">
               <input
                 type="checkbox"
                 id="agreeTerms"
                 checked={agreeTerms}
                 onChange={(e) => setAgreeTerms(e.target.checked)}
-                className="accent-[#C9A96E] mt-0.5 cursor-pointer"
+                className="accent-[rgb(var(--gold))] mt-0.5 cursor-pointer"
                 required
               />
               <label htmlFor="agreeTerms" className="cursor-pointer select-none tracking-wider uppercase">
                 I agree to the{" "}
-                <Link href="/terms" className="text-[#C9A96E] hover:text-white transition-colors">Terms</Link>
+                <Link href="/terms" className="text-[rgb(var(--gold))] hover:text-[rgb(var(--foreground))] transition-colors">Terms</Link>
                 {" "}and{" "}
-                <Link href="/privacy-policy" className="text-[#C9A96E] hover:text-white transition-colors">Privacy Policy</Link>
+                <Link href="/privacy-policy" className="text-[rgb(var(--gold))] hover:text-[rgb(var(--foreground))] transition-colors">Privacy Policy</Link>
                 .
               </label>
             </div>
@@ -196,11 +196,11 @@ export default function SignUpPage() {
 
           {/* Footer */}
           <div className="text-center pt-2">
-            <p className="text-[10px] text-white/30 tracking-widest uppercase">
+            <p className="text-[10px] text-[rgb(var(--text-muted))] tracking-widest uppercase">
               Already have an account?{" "}
               <Link
                 href="/signin"
-                className="text-[#C9A96E] hover:text-white transition-colors font-medium border-b border-[#C9A96E]/20 hover:border-white pb-0.5 ml-1"
+                className="text-[rgb(var(--gold))] hover:text-[rgb(var(--foreground))] transition-colors font-medium border-b border-[rgb(var(--gold))]/20 hover:border-[rgb(var(--foreground))] pb-0.5 ml-1"
               >
                 Sign In
               </Link>

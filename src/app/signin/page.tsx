@@ -45,23 +45,23 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-85px)] bg-[#0a0a0a] text-white flex flex-col md:flex-row font-sans">
+    <div className="min-h-[calc(100vh-85px)] bg-[rgb(var(--background))] text-[rgb(var(--foreground))] flex flex-col md:flex-row font-sans">
       
       {/* Left Side: Form Panel */}
-      <div className="w-full md:w-[45%] flex items-center justify-center p-8 md:p-12 lg:p-16 xl:p-24 relative overflow-hidden bg-gradient-to-b from-[#0a0a0a] to-[#0c0c0c]">
+      <div className="w-full md:w-[45%] flex items-center justify-center p-8 md:p-12 lg:p-16 xl:p-24 relative overflow-hidden bg-gradient-to-b from-[rgb(var(--background))] to-[rgb(var(--surface))]">
         {/* Background ambient glow */}
-        <div className="absolute top-1/4 left-1/4 w-[80%] h-[50%] rounded-full bg-[#C9A96E] blur-[150px] opacity-[0.02] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/4 w-[80%] h-[50%] rounded-full bg-[rgb(var(--gold))] blur-[150px] opacity-[0.03] pointer-events-none" />
 
         <div className="w-full max-w-md space-y-10 relative z-10 animate-fade-up">
           {/* Header */}
           <div className="space-y-4">
-            <span className="text-[9px] tracking-[0.45em] uppercase text-[#C9A96E] font-medium block">
+            <span className="text-[9px] tracking-[0.45em] uppercase text-[rgb(var(--gold))] font-medium block">
               House of Shree Sai Creation
             </span>
-            <h1 className="font-serif text-3xl lg:text-4xl tracking-widest text-white leading-tight">
+            <h1 className="font-serif text-3xl lg:text-4xl tracking-widest text-[rgb(var(--foreground))] leading-tight">
               Welcome Back
             </h1>
-            <p className="text-xs text-white/40 tracking-wider">
+            <p className="text-xs text-[rgb(var(--text-secondary))] tracking-wider">
               Enter your credentials to access your luxury lighting workspace.
             </p>
           </div>
@@ -73,7 +73,7 @@ export default function SignInPage() {
             </div>
           )}
           {successMsg && (
-            <div className="border border-[#C9A96E]/20 bg-[#C9A96E]/5 text-[#C9A96E] p-4 text-xs tracking-wide text-center rounded-lg">
+            <div className="border border-[rgb(var(--gold))]/20 bg-[rgb(var(--gold))]/5 text-[rgb(var(--gold))] p-4 text-xs tracking-wide text-center rounded-lg">
               {successMsg}
             </div>
           )}
@@ -81,15 +81,15 @@ export default function SignInPage() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-white/40">Email Address *</label>
-              <div className="relative border-b border-white/10 focus-within:border-[#C9A96E] transition-colors py-1">
-                <Mail className="absolute left-1 top-3 text-white/20" size={14} />
+              <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-[rgb(var(--text-muted))]">Email Address *</label>
+              <div className="relative border-b border-[rgb(var(--border))] focus-within:border-[rgb(var(--gold))] transition-colors py-1">
+                <Mail className="absolute left-1 top-3 text-[rgb(var(--text-muted))]/40" size={14} />
                 <input
                   type="email"
                   placeholder="yourname@domain.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-transparent text-white placeholder-white/25 py-2.5 pl-8 text-sm tracking-wide focus:outline-none"
+                  className="w-full bg-transparent text-[rgb(var(--foreground))] placeholder-[rgb(var(--text-muted))]/50 py-2.5 pl-8 text-sm tracking-wide focus:outline-none"
                   required
                   disabled={isLoading}
                 />
@@ -98,23 +98,23 @@ export default function SignInPage() {
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-white/40">Password *</label>
+                <label className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-[rgb(var(--text-muted))]">Password *</label>
               </div>
-              <div className="relative border-b border-white/10 focus-within:border-[#C9A96E] transition-colors py-1">
-                <Lock className="absolute left-1 top-3 text-white/20" size={14} />
+              <div className="relative border-b border-[rgb(var(--border))] focus-within:border-[rgb(var(--gold))] transition-colors py-1">
+                <Lock className="absolute left-1 top-3 text-[rgb(var(--text-muted))]/40" size={14} />
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-transparent text-white placeholder-white/25 py-2.5 pl-8 pr-10 text-sm tracking-wide focus:outline-none"
+                  className="w-full bg-transparent text-[rgb(var(--foreground))] placeholder-[rgb(var(--text-muted))]/50 py-2.5 pl-8 pr-10 text-sm tracking-wide focus:outline-none"
                   required
                   disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-1 top-2.5 text-white/30 hover:text-white transition-colors"
+                  className="absolute right-1 top-2.5 text-[rgb(var(--text-muted))]/60 hover:text-[rgb(var(--foreground))] transition-colors"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -122,18 +122,18 @@ export default function SignInPage() {
               </div>
             </div>
 
-            <div className="flex justify-between items-center text-[10px] text-white/40">
+            <div className="flex justify-between items-center text-[10px] text-[rgb(var(--text-muted))]">
               <label className="flex items-center gap-2.5 cursor-pointer select-none group">
                 <input
                   type="checkbox"
-                  className="accent-[#C9A96E] cursor-pointer w-3.5 h-3.5 rounded border-white/10"
+                  className="accent-[rgb(var(--gold))] cursor-pointer w-3.5 h-3.5 rounded border-[rgb(var(--border))]"
                 />
-                <span className="tracking-wider uppercase group-hover:text-white/60 transition-colors">Remember me</span>
+                <span className="tracking-wider uppercase group-hover:text-[rgb(var(--text-secondary))] transition-colors">Remember me</span>
               </label>
               <button
                 type="button"
                 onClick={() => setErrorMsg("Password reset link sent to your email.")}
-                className="hover:text-[#C9A96E] transition-colors tracking-wider uppercase"
+                className="hover:text-[rgb(var(--gold))] transition-colors tracking-wider uppercase"
               >
                 Forgot password?
               </button>
@@ -162,11 +162,11 @@ export default function SignInPage() {
 
           {/* Footer */}
           <div className="text-center pt-2">
-            <p className="text-[10px] text-white/30 tracking-widest uppercase">
+            <p className="text-[10px] text-[rgb(var(--text-muted))] tracking-widest uppercase">
               New to Shree Sai Creation?{" "}
               <Link
                 href="/signup"
-                className="text-[#C9A96E] hover:text-white transition-colors font-medium border-b border-[#C9A96E]/20 hover:border-white pb-0.5 ml-1"
+                className="text-[rgb(var(--gold))] hover:text-[rgb(var(--foreground))] transition-colors font-medium border-b border-[rgb(var(--gold))]/20 hover:border-[rgb(var(--foreground))] pb-0.5 ml-1"
               >
                 Create Account
               </Link>
