@@ -28,10 +28,7 @@ const MOCK_ORDERS = [
     status: "In Production",
     items: [{ name: "Shree Sai Royale Chandelier", qty: 1, price: 4850 }],
     steps: [
-      { label: "Order Placed", date: "July 10, 2026", done: true, current: false },
-      { label: "Hand-Crafting & Assembly", date: "July 12, 2026", done: true, current: true },
-      { label: "Glass & Prisms Inspection", date: "Pending", done: false, current: false },
-      { label: "Packing & Dispatch", date: "Pending", done: false, current: false },
+      { label: "Order Placed", date: "July 10, 2026", done: true, current: true },
       { label: "Delivered", date: "Pending", done: false, current: false }
     ]
   },
@@ -43,10 +40,7 @@ const MOCK_ORDERS = [
     items: [{ name: "Classic Alabaster Wall Sconce", qty: 2, price: 625 }],
     steps: [
       { label: "Order Placed", date: "June 24, 2026", done: true, current: false },
-      { label: "Hand-Crafting & Assembly", date: "June 26, 2026", done: true, current: false },
-      { label: "Glass & Prisms Inspection", date: "June 27, 2026", done: true, current: false },
-      { label: "Packing & Dispatch", date: "June 28, 2026", done: true, current: false },
-      { label: "Delivered", date: "June 30, 2026", done: true, current: false }
+      { label: "Delivered", date: "June 30, 2026", done: true, current: true }
     ]
   }
 ];
