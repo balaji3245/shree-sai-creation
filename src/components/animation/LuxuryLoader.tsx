@@ -37,40 +37,38 @@ export const LuxuryLoader: React.FC = () => {
           {/* Subtle warm glow background */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#C5A880] rounded-full blur-[140px] opacity-10 pointer-events-none" />
 
-          {/* SVG Monogram Draw */}
-          <div className="relative mb-6 flex items-center justify-center">
+          {/* Animated Logo with Circular Ring */}
+          <div className="relative mb-6 flex items-center justify-center w-20 h-20 md:w-24 md:h-24">
             <svg
               width="100"
               height="100"
               viewBox="0 0 100 100"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="w-20 h-20 md:w-24 md:h-24"
+              className="absolute inset-0 w-full h-full"
             >
               {/* Outer Golden Geometric Ring */}
               <motion.circle
                 cx="50"
                 cy="50"
-                r="44"
+                r="46"
                 stroke="#C5A880"
-                strokeWidth="1"
+                strokeWidth="1.5"
                 initial={{ pathLength: 0, rotate: -90 }}
                 animate={{ pathLength: 1, rotate: 270 }}
                 transition={{ duration: 2, ease: "easeInOut" }}
               />
-              
-              {/* Monogram 'A' */}
-              <motion.path
-                d="M50 20 L28 75 M50 20 L72 75 M36 57 H64"
-                stroke="#FAF8F5"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1.8, delay: 0.4, ease: "easeInOut" }}
-              />
             </svg>
+            
+            {/* Site Logo */}
+            <motion.img 
+              src="/logo.png" 
+              alt="Shree Sai Creation Logo" 
+              className="w-10 h-10 md:w-12 md:h-12 object-contain relative z-10"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5, delay: 0.4, ease: "easeOut" }}
+            />
           </div>
 
           {/* Brand Name & Tagline */}
