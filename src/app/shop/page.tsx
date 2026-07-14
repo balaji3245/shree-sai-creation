@@ -241,30 +241,6 @@ function ShopContent() {
               Showing {filteredProducts.length} pieces
             </span>
 
-            <div className="flex items-center gap-4">
-
-              {/* Grid/List layout toggle */}
-              <div className="hidden sm:flex border border-white/10 p-0.5 bg-[#0d0d0d]">
-                <button
-                  onClick={() => setLayoutMode("grid")}
-                  className={`p-1.5 transition-colors ${
-                    layoutMode === "grid" ? "bg-white/10 text-white" : "text-white/40 hover:text-white"
-                  }`}
-                  aria-label="Grid layout"
-                >
-                  <Grid size={13} />
-                </button>
-                <button
-                  onClick={() => setLayoutMode("list")}
-                  className={`p-1.5 transition-colors ${
-                    layoutMode === "list" ? "bg-white/10 text-white" : "text-white/40 hover:text-white"
-                  }`}
-                  aria-label="List layout"
-                >
-                  <List size={13} />
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 
