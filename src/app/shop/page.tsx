@@ -139,8 +139,8 @@ function ShopContent() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* 2. Search, Layout, Sorting Controls Panel */}
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-center border-b border-white/5 pb-6 mb-8">
+        {/* 2. Controls & Search Bar */}
+        <div className="flex flex-col md:flex-row-reverse justify-between items-center gap-6 mb-8 mt-12 bg-black/40 p-4 border border-white/5">
           <div className="flex items-center gap-3 w-full md:w-auto">
             {/* Filter Toggle Mobile */}
             <button
@@ -268,7 +268,7 @@ function ShopContent() {
         )}
 
         {/* 4. Desktop Sidebar and Main Product Grid */}
-        <div className="flex gap-8 items-start">
+        <div className="flex gap-8 items-start flex-col lg:flex-row-reverse">
           {/* Desktop Left Sidebar Filters */}
           <aside className="hidden lg:block w-64 flex-shrink-0 bg-[#0d0d0d] border border-white/5 p-6 space-y-8 uppercase tracking-widest text-[10px]">
             {/* Category Filter */}
