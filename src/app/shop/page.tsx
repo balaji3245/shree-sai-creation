@@ -140,7 +140,7 @@ function ShopContent() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* 2. Unified Controls & Filters */}
-        <div className="flex flex-col xl:flex-row items-center justify-between gap-6 mb-8 mt-12 bg-black/40 p-4 border border-white/5 w-full">
+        <div className="flex flex-col xl:flex-row items-center justify-between gap-6 mb-8 mt-12 w-full">
           
           {/* Left Side: Count & Dropdown Filters */}
           <div className="flex flex-wrap items-center gap-4 xl:gap-6 w-full xl:w-auto text-[9px] uppercase tracking-widest text-white/50">
