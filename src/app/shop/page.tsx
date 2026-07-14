@@ -204,14 +204,6 @@ function ShopContent() {
 
           {/* Right Side: Search */}
           <div className="flex items-center gap-3 w-full xl:w-auto">
-            {/* Filter Toggle Mobile */}
-            <button
-              onClick={() => setIsFilterDrawerOpen(true)}
-              className="lg:hidden flex items-center gap-2 border border-white/10 px-4 py-2 text-xs uppercase tracking-widest text-white/70 hover:text-white"
-            >
-              <SlidersHorizontal size={14} />
-              Filters
-            </button>
 
             {/* Search Input */}
             <div className="relative flex-1 md:w-72 flex items-center border border-white/10 bg-[#0d0d0d] px-3 py-2 focus-within:border-white/40 transition-colors">
