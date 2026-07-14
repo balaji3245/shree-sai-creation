@@ -140,13 +140,13 @@ function ShopContent() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* 2. Unified Controls & Filters */}
-        <div className="flex flex-col xl:flex-row items-center justify-between gap-6 mb-8 mt-12 w-full">
+        <div className="flex flex-row items-center justify-between gap-4 mb-8 mt-12 w-full">
           
           {/* Left Side: Filter Button */}
-          <div className="flex items-center gap-3 w-full xl:w-auto">
+          <div className="flex items-center shrink-0">
             <button
               onClick={() => setIsFilterDrawerOpen(true)}
-              className="flex items-center gap-2 border border-white/10 px-4 py-2 text-xs uppercase tracking-widest text-white/70 hover:text-white transition-colors"
+              className="flex items-center gap-2 border border-white/10 px-3 md:px-4 py-2 text-[10px] md:text-xs uppercase tracking-widest text-white/70 hover:text-white transition-colors"
             >
               <SlidersHorizontal size={14} />
               Filters
@@ -154,10 +154,10 @@ function ShopContent() {
           </div>
 
           {/* Right Side: Search */}
-          <div className="flex items-center gap-3 w-full xl:w-auto">
+          <div className="flex items-center flex-1 max-w-md justify-end">
 
             {/* Search Input */}
-            <div className="relative flex-1 md:w-72 flex items-center border border-white/10 bg-[#0d0d0d] px-3 py-2 focus-within:border-white/40 transition-colors">
+            <div className="relative w-full sm:w-72 flex items-center border border-white/10 bg-[#0d0d0d] px-3 py-2 focus-within:border-white/40 transition-colors">
               <Search className="text-white/30 mr-2" size={14} />
               <input
                 type="text"
