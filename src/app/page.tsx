@@ -52,40 +52,40 @@ const HERO_SLIDES = [
 // ── Categories ──────────────────────────────────────────────
 const CATEGORIES = [
   { 
-    name: "CHANDELIERS", 
+    name: "CHANDELIER", 
     count: 24, 
     img: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?q=80&w=600",
-    slug: "Chandeliers"
+    slug: "Chandelier"
   },
   { 
-    name: "PENDANT LIGHTS", 
-    count: 18, 
-    img: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?q=80&w=600",
-    slug: "Pendant Lights"
-  },
-  { 
-    name: "WALL LIGHTS", 
+    name: "INDOOR WALL LAMPS", 
     count: 20, 
     img: "https://images.unsplash.com/photo-1543248939-ff40856f65d4?q=80&w=600",
-    slug: "Wall Lights"
+    slug: "Indoor wall lamps"
+  },
+  { 
+    name: "LINEAR LIGHTS", 
+    count: 14, 
+    img: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?q=80&w=600",
+    slug: "Linear lights"
   },
   { 
     name: "CEILING LIGHTS", 
     count: 16, 
     img: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=80&w=600",
-    slug: "Ceiling Lights"
+    slug: "Ceiling lights"
   },
   { 
-    name: "TABLE LAMPS", 
-    count: 14, 
-    img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=600",
-    slug: "Table Lamps"
+    name: "INTERNAL PENDANT LIGHTS", 
+    count: 18, 
+    img: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?q=80&w=600",
+    slug: "Internal pendant lights"
   },
   { 
-    name: "OUTDOOR LIGHTS", 
+    name: "OUTDOOR WALL LAMPS", 
     count: 12, 
     img: "https://images.unsplash.com/photo-1532007271951-c487760934ae?q=80&w=600",
-    slug: "Outdoor Lights"
+    slug: "Outdoor wall lamps"
   }
 ];
 

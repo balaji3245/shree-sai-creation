@@ -13,10 +13,10 @@ import { Logo } from "@/components/common/Logo";
 
 // ─── Category previews for mega menu ─────────────────────────
 const MEGA_CATEGORIES = [
-  { name: "Chandeliers", count: 24, img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80", slug: "Chandeliers" },
-  { name: "Pendant Lights", count: 18, img: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=300&q=80", slug: "Pendant Lights" },
-  { name: "Wall Lights", count: 20, img: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=300&q=80", slug: "Wall Lights" },
-  { name: "Table Lamps", count: 16, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300&q=80", slug: "Table Lamps" },
+  { name: "Chandelier", count: 24, img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80", slug: "Chandelier" },
+  { name: "Internal pendant lights", count: 18, img: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=300&q=80", slug: "Internal pendant lights" },
+  { name: "Indoor wall lamps", count: 20, img: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=300&q=80", slug: "Indoor wall lamps" },
+  { name: "Ceiling lights", count: 16, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300&q=80", slug: "Ceiling lights" },
 ];
 
 export const Header: React.FC = () => {
