@@ -255,7 +255,7 @@ export default function CheckoutPage() {
                     <button
                       key={method.id}
                       type="button"
-                      onClick={() => setPaymentMethod(method.id as any)}
+                      onClick={() => setPaymentMethod(method.id as "visa" | "mastercard" | "stripe" | "paypal" | "cod")}
                       className={`p-3 border flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer text-[9px] uppercase tracking-wider font-semibold ${
                         paymentMethod === method.id
                           ? "bg-[#C5A880]/5 border-[#C5A880] text-[#C5A880]"
