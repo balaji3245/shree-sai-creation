@@ -138,3 +138,34 @@ npm install
 npm run build
 pm2 restart shree-sai-creation
 ```
+
+---
+
+## Step 9: Redirecting Multiple Domains to Main Domain (.com) [Option 1]
+If you have multiple domains (e.g. `.com.au`, `.org`, `.online`) and want all of them to redirect to the primary `https://shreesaicreation.com` domain for better SEO:
+
+1. **DNS Setup**: Point all domains (A records) to your VPS IP (`145.79.11.35`).
+2. **SSL Setup for all domains**: Run this command on your VPS (select `E` or `2` to expand the existing certificate):
+   ```bash
+   certbot --nginx -d shreesaicreation.com -d www.shreesaicreation.com -d shreesaicreation.com.au -d www.shreesaicreation.com.au -d shreesaicreation.org -d www.shreesaicreation.org -d shreesaicreation.online -d www.shreesaicreation.online
+   ```
+3. **Setup Nginx Redirect**: Open Nginx config file:
+   ```bash
+   nano /etc/nginx/sites-available/default
+   ```
+   Modify or add the server blocks for the secondary domains (`.com.au`, `.org`, `.online`) so that they return a 301 redirect. 
+   
+   For example, replace their `location /` blocks with:
+   ```nginx
+   location / {
+       return 301 https://shreesaicreation.com$request_uri;
+   }
+   ```
+   This ensures that all traffic, queries, and page paths automatically forward to the exact same page on the primary `.com` website securely.
+
+4. **Restart Nginx**:
+   ```bash
+   nginx -t
+   systemctl restart nginx
+   ```
+
