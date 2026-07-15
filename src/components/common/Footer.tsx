@@ -170,9 +170,9 @@ export const Footer: React.FC = () => {
               <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm">
                 <span className="text-[8px] font-extrabold text-[#003087] italic tracking-tighter font-sans">PayPal</span>
               </div>
-              {/* Apple Pay */}
+              {/* COD */}
               <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm">
-                <span className="text-[8px] font-bold text-black font-sans flex items-center"> Pay</span>
+                <span className="text-[8px] font-bold text-black font-sans flex items-center">COD</span>
               </div>
             </div>
           </div>
