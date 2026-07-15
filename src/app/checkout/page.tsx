@@ -12,7 +12,7 @@ export default function CheckoutPage() {
 
   // Checkout phase: form -> success
   const [isCompleted, setIsCompleted] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"card" | "wire">("card");
+  const [paymentMethod, setPaymentMethod] = useState<"visa" | "mastercard" | "stripe" | "paypal" | "cod">("visa");
   const [orderNumber, setOrderNumber] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
@@ -244,35 +244,38 @@ export default function CheckoutPage() {
                 </h3>
                 
                 {/* Method Swatches */}
-                <div className="flex gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod("card")}
-                    className={`flex-1 p-4 border flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
-                      paymentMethod === "card"
-                        ? "bg-[#C5A880]/5 border-[#C5A880] text-[#C5A880]"
-                        : "bg-transparent border-white/10 text-white hover:border-white/20"
-                    }`}
-                  >
-                    <CreditCard size={14} />
-                    <span>Credit Card</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod("wire")}
-                    className={`flex-1 p-4 border flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
-                      paymentMethod === "wire"
-                        ? "bg-[#C5A880]/5 border-[#C5A880] text-[#C5A880]"
-                        : "bg-transparent border-white/10 text-white hover:border-white/20"
-                    }`}
-                  >
-                    <Landmark size={14} />
-                    <span>Bank Wire Transfer</span>
-                  </button>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  {[
+                    { id: "visa", label: "Visa" },
+                    { id: "mastercard", label: "Mastercard" },
+                    { id: "stripe", label: "Stripe" },
+                    { id: "paypal", label: "PayPal" },
+                    { id: "cod", label: "COD" },
+                  ].map((method) => (
+                    <button
+                      key={method.id}
+                      type="button"
+                      onClick={() => setPaymentMethod(method.id as any)}
+                      className={`p-3 border flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer text-[9px] uppercase tracking-wider font-semibold ${
+                        paymentMethod === method.id
+                          ? "bg-[#C5A880]/5 border-[#C5A880] text-[#C5A880]"
+                          : "bg-transparent border-white/10 text-white hover:border-white/20"
+                      }`}
+                    >
+                      {method.id === "visa" || method.id === "mastercard" || method.id === "stripe" ? (
+                        <CreditCard size={14} />
+                      ) : method.id === "paypal" ? (
+                        <span className="text-[9px] italic font-extrabold tracking-tighter">PayPal</span>
+                      ) : (
+                        <span className="text-[9px] font-bold">COD</span>
+                      )}
+                      <span>{method.label}</span>
+                    </button>
+                  ))}
                 </div>
 
                 {/* Sub-Forms */}
-                {paymentMethod === "card" ? (
+                {(paymentMethod === "visa" || paymentMethod === "mastercard" || paymentMethod === "stripe") && (
                   <div className="space-y-4 pt-2">
                     <div className="space-y-2">
                       <label className="block font-medium">Cardholder Name *</label>
@@ -281,7 +284,7 @@ export default function CheckoutPage() {
                         value={formData.cardName}
                         onChange={(e) => setFormData({ ...formData, cardName: e.target.value })}
                         className="w-full bg-[#111] border border-white/10 text-white p-3 text-[9px] tracking-widest uppercase focus:border-white focus:outline-none"
-                        required
+                        required={paymentMethod === "visa" || paymentMethod === "mastercard" || paymentMethod === "stripe"}
                       />
                     </div>
                     <div className="space-y-2">
@@ -292,7 +295,7 @@ export default function CheckoutPage() {
                         onChange={(e) => setFormData({ ...formData, cardNumber: e.target.value })}
                         className="w-full bg-[#111] border border-white/10 text-white p-3 text-[9px] tracking-widest uppercase focus:border-white focus:outline-none"
                         placeholder="•••• •••• •••• ••••"
-                        required
+                        required={paymentMethod === "visa" || paymentMethod === "mastercard" || paymentMethod === "stripe"}
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -304,7 +307,7 @@ export default function CheckoutPage() {
                           onChange={(e) => setFormData({ ...formData, cardExpiry: e.target.value })}
                           className="w-full bg-[#111] border border-white/10 text-white p-3 text-[9px] tracking-widest uppercase focus:border-white focus:outline-none"
                           placeholder="MM / YY"
-                          required
+                          required={paymentMethod === "visa" || paymentMethod === "mastercard" || paymentMethod === "stripe"}
                         />
                       </div>
                       <div className="space-y-2">
@@ -315,23 +318,28 @@ export default function CheckoutPage() {
                           onChange={(e) => setFormData({ ...formData, cardCVV: e.target.value })}
                           className="w-full bg-[#111] border border-white/10 text-white p-3 text-[9px] tracking-widest uppercase focus:border-white focus:outline-none"
                           placeholder="•••"
-                          required
+                          required={paymentMethod === "visa" || paymentMethod === "mastercard" || paymentMethod === "stripe"}
                         />
                       </div>
                     </div>
                   </div>
-                ) : (
+                )}
+
+                {paymentMethod === "paypal" && (
                   <div className="p-4 border border-[#C5A880]/20 bg-white/5 space-y-3 font-sans text-xs tracking-wider normal-case text-white/80 leading-relaxed font-light">
                     <p className="text-[10px] uppercase tracking-widest text-[#C5A880] font-semibold font-sans mb-1">
-                      Bank Wire Routing Details:
+                      PayPal Checkout:
                     </p>
-                    <p><strong>Bank:</strong> BNP Paribas SA, Paris</p>
-                    <p><strong>Account Name:</strong> Shree Sai Creation d&apos;Exception SAS</p>
-                    <p><strong>IBAN:</strong> FR76 3000 4028 9200 0184 9284 928</p>
-                    <p><strong>BIC/SWIFT:</strong> BNPPAFR2X</p>
-                    <p className="text-[9px] uppercase tracking-widest text-white/40 pt-2 border-t border-white/5">
-                      Note: Production crating schedules initiate as soon as wire verification clears.
+                    <p>You will be securely redirected to PayPal to complete your payment after clicking &quot;Place Order&quot;.</p>
+                  </div>
+                )}
+
+                {paymentMethod === "cod" && (
+                  <div className="p-4 border border-[#C5A880]/20 bg-white/5 space-y-3 font-sans text-xs tracking-wider normal-case text-white/80 leading-relaxed font-light">
+                    <p className="text-[10px] uppercase tracking-widest text-[#C5A880] font-semibold font-sans mb-1">
+                      Cash on Delivery (COD):
                     </p>
+                    <p>No upfront payment is required. You will pay in cash or via UPI/QR code at your doorstep upon delivery.</p>
                   </div>
                 )}
               </div>
