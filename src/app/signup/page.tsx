@@ -18,7 +18,7 @@ export default function SignUpPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
     setSuccessMsg("");
@@ -42,12 +42,31 @@ export default function SignUpPage() {
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const res = await fetch("/api/v1/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to create account. Please try again.");
+      }
+
       setSuccessMsg("Account created successfully. Redirecting to sign in...");
-      localStorage.setItem("shree_sai_registered_user", JSON.stringify({ name, email }));
-      setTimeout(() => { router.push("/signin"); }, 1500);
-    }, 1500);
+      setTimeout(() => {
+        router.push("/signin");
+      }, 1500);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Connection failed. Please check if server is running.";
+      setErrorMsg(message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const inputUnderlineClass = "w-full bg-transparent text-white placeholder-white/25 py-2.5 pl-8 text-sm tracking-wide focus:outline-none";

@@ -15,7 +15,7 @@ export default function SignInPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
     setSuccessMsg("");
@@ -27,21 +27,42 @@ export default function SignInPage() {
 
     setIsLoading(true);
 
-    // Mock authentication
-    setTimeout(() => {
-      setIsLoading(false);
-      if (email.toLowerCase() === "admin@shreesaicreation.com" && password === "admin123") {
-        setSuccessMsg("Welcome back. Signing you in...");
-        localStorage.setItem("shree_sai_user", JSON.stringify({ email, name: "Master Artisan", role: "admin" }));
-        setTimeout(() => { router.push("/"); router.refresh(); }, 1500);
-      } else if (password.length >= 6) {
-        setSuccessMsg("Signed in successfully. Redirecting...");
-        localStorage.setItem("shree_sai_user", JSON.stringify({ email, name: email.split("@")[0].toUpperCase(), role: "customer" }));
-        setTimeout(() => { router.push("/"); router.refresh(); }, 1500);
-      } else {
-        setErrorMsg("Incorrect email or password. Please try again.");
+    try {
+      const isAdmin = email.toLowerCase() === "admin@shreesaicreation.com";
+      const endpoint = isAdmin ? "/api/v1/admin/auth/login" : "/api/v1/auth/login";
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Invalid credentials or connection error.");
       }
-    }, 1500);
+
+      setSuccessMsg("Signed in successfully. Redirecting...");
+
+      const userObj = isAdmin
+        ? { email: data.admin.email, name: data.admin.name, role: "admin", token: data.token }
+        : { email: data.user.email, name: data.user.name, role: "customer", token: data.token };
+
+      localStorage.setItem("shree_sai_user", JSON.stringify(userObj));
+
+      setTimeout(() => {
+        router.push("/");
+        router.refresh();
+      }, 1500);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Connection failed. Please check if server is running.";
+      setErrorMsg(message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

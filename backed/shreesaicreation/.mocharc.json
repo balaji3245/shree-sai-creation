@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "timeout": 60000,
+  "exit": true,
+  "recursive": true,
+  "require": ["tests/hooks.js"],
+  "spec": ["tests/**/*.test.js"]
+}
