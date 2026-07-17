@@ -8,6 +8,9 @@ import faqRepository from '../repositories/faq.repository.js';
 import shippingZoneRepository from '../repositories/shippingZone.repository.js';
 import { slugify } from '../utilities/slugify.js';
 import logger from '../utilities/logger.js';
+import ProductService from '../services/ProductService.js';
+import productRepository from '../repositories/product.repository.js';
+import { MOCK_PRODUCTS } from './mockProducts.js';
 
 const DEFAULT_CATEGORIES = [
   'Chandelier',
@@ -330,6 +333,92 @@ export async function seedShippingZones() {
   logger.info('Seeded shipping zones');
 }
 
+export async function seedProducts() {
+  const existing = await productRepository.count();
+  if (existing > 0) {
+    logger.info(`Products already seeded (${existing})`);
+    return;
+  }
+
+  const cats = await categoryRepository.findMany({});
+  const catMap = {};
+  for (const cat of cats) {
+    catMap[cat.name.toLowerCase()] = cat._id;
+  }
+
+  const createdProducts = [];
+  for (const mock of MOCK_PRODUCTS) {
+    const catId = catMap[mock.categoryName.toLowerCase()];
+    if (!catId) {
+      logger.warn(`Category not found for product: ${mock.name} (${mock.categoryName})`);
+      continue;
+    }
+
+    const compareAtPriceInPaise = mock.discount
+      ? Math.round((mock.price * 100) / (1 - mock.discount / 100))
+      : null;
+
+    const payload = {
+      name: mock.name,
+      slug: mock.slug,
+      shortDescription: mock.description.substring(0, 150) + '...',
+      description: mock.description,
+      highlights: mock.features,
+      categoryIds: [catId],
+      status: 'published',
+      visibility: 'public',
+      images: mock.images.map((url, idx) => ({
+        url,
+        key: `img-${mock.slug}-${idx}`,
+        isPrimary: idx === 0,
+        alt: mock.name
+      })),
+      variants: [
+        {
+          sku: `${mock.slug.toUpperCase()}-DEFAULT`,
+          priceInPaise: mock.price * 100,
+          compareAtPriceInPaise,
+          stock: mock.stock,
+          isDefault: true
+        }
+      ],
+      materials: mock.material.split(',').map(m => m.trim()),
+      finish: mock.finish.split('/').map(f => f.trim()),
+      numberOfLights: mock.bulbs.match(/\d+/) ? Number(mock.bulbs.match(/\d+/)[0]) : null,
+      bulbType: mock.bulbs.toLowerCase().includes('led') ? 'led_integrated' : 'e27',
+      bulbIncluded: true,
+      averageRating: mock.rating,
+      reviewCount: mock.reviews?.length || 0
+    };
+
+    const { product } = await ProductService.create(payload);
+    createdProducts.push({
+      _id: product._id,
+      slug: product.slug,
+      relatedSlugs: mock.relatedSlugs || []
+    });
+  }
+
+  const slugToIdMap = {};
+  for (const cp of createdProducts) {
+    slugToIdMap[cp.slug] = cp._id;
+  }
+
+  for (const cp of createdProducts) {
+    const relatedIds = cp.relatedSlugs
+      .map(slug => slugToIdMap[slug])
+      .filter(Boolean);
+
+    if (relatedIds.length > 0) {
+      await productRepository.updateById(cp._id, {
+        $set: { relatedProductIds: relatedIds }
+      });
+    }
+  }
+
+  logger.info(`Seeded ${createdProducts.length} products`);
+}
+
 export async function runAllSeeds() {
   await seedAdmin();
   await seedStoreSettings();
@@ -338,4 +427,5 @@ export async function runAllSeeds() {
   await seedHomeSections();
   await seedFaqs();
   await seedShippingZones();
+  await seedProducts();
 }

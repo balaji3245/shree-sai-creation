@@ -7,7 +7,7 @@ import { PRODUCTS, CATEGORIES, MATERIALS, FINISHES, Product } from "@/data/produ
 import { ProductCard } from "@/components/shop/ProductCard";
 import { SlidersHorizontal, Grid, List, X, Search, RotateCcw } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { getStoredProducts } from "@/utils/db";
+import { getStoredProducts, mapBackendProductToFrontend } from "@/utils/db";
 
 function ShopContent() {
   const searchParams = useSearchParams();
@@ -16,9 +16,27 @@ function ShopContent() {
 
   // Dynamic products list state
   const [products, setProducts] = useState<Product[]>([]);
+  const [isProductsLoading, setIsProductsLoading] = useState(true);
 
   useEffect(() => {
-    setProducts(getStoredProducts());
+    const fetchProducts = async () => {
+      try {
+        setIsProductsLoading(true);
+        const res = await fetch("/api/v1/products?limit=100");
+        const data = await res.json();
+        if (res.ok && data.products) {
+          setProducts(data.products.map(mapBackendProductToFrontend));
+        } else {
+          setProducts(getStoredProducts());
+        }
+      } catch (err) {
+        console.error("Failed to fetch products from backend:", err);
+        setProducts(getStoredProducts());
+      } finally {
+        setIsProductsLoading(false);
+      }
+    };
+    fetchProducts();
   }, []);
 
   // Read URL parameters if set, for seamless mega menu routing

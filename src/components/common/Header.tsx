@@ -8,7 +8,7 @@ import { ShoppingCart, Heart, Search, Menu, X, Trash2, Plus, Minus, ArrowRight, 
 import { useCart } from "@/context/CartContext";
 import { PRODUCTS, Product } from "@/data/products";
 import { Logo } from "@/components/common/Logo";
-import { getStoredProducts } from "@/utils/db";
+import { getStoredProducts, mapBackendProductToFrontend } from "@/utils/db";
 
 
 
@@ -45,7 +45,23 @@ export const Header: React.FC = () => {
   const totalCartItems = cart.reduce((s, i) => s + i.quantity, 0);
 
   useEffect(() => {
-    setProducts(getStoredProducts());
+    const fetchSearchProducts = async () => {
+      try {
+        const res = await fetch("/api/v1/products?limit=100");
+        const data = await res.json();
+        if (res.ok && data.products) {
+          setProducts(data.products.map(mapBackendProductToFrontend));
+        } else {
+          setProducts(getStoredProducts());
+        }
+      } catch (err) {
+        console.error("Failed to load products for header search:", err);
+        setProducts(getStoredProducts());
+      }
+    };
+    if (isSearchOpen) {
+      fetchSearchProducts();
+    }
   }, [isSearchOpen]);
 
   // Scroll detection

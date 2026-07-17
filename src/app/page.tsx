@@ -20,7 +20,7 @@ import {
 import { useCart } from "@/context/CartContext";
 import { PRODUCTS, Product } from "@/data/products";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { getStoredProducts } from "@/utils/db";
+import { getStoredProducts, mapBackendProductToFrontend } from "@/utils/db";
 
 // ── Hero slides ──────────────────────────────────────────────
 const HERO_SLIDES = [
@@ -107,12 +107,26 @@ export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    setProducts(getStoredProducts());
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("/api/v1/products?limit=100");
+        const data = await res.json();
+        if (res.ok && data.products) {
+          setProducts(data.products.map(mapBackendProductToFrontend));
+        } else {
+          setProducts(getStoredProducts());
+        }
+      } catch (err) {
+        console.error("Failed to load products for home page:", err);
+        setProducts(getStoredProducts());
+      }
+    };
+    fetchProducts();
   }, []);
 
-  // Filter out the 5 specific Shree Sai chandeliers for the Best Sellers carousel
+  // Filter out the chandeliers for the Best Sellers carousel
   const bestSellers = useMemo(() => {
-    return products.filter(p => p.id.startsWith("prod_shreesai_"));
+    return products.filter(p => p.category.toLowerCase() === "chandelier").slice(0, 8);
   }, [products]);
 
   const scrollLeft = () => {

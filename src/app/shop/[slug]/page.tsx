@@ -9,7 +9,7 @@ import { Heart, Share2, Star, ArrowLeft, Plus, Minus, Info } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/animation/ScrollReveal";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { getStoredProducts } from "@/utils/db";
+import { getStoredProducts, mapBackendProductToFrontend } from "@/utils/db";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -19,13 +19,40 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
   // Unwrap params using React.use()
   const { slug } = use(params);
 
-  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setProducts(getStoredProducts());
-    setIsLoaded(true);
-  }, []);
+    const fetchProductDetail = async () => {
+      try {
+        const res = await fetch(`/api/v1/products/${slug}`);
+        const data = await res.json();
+        if (res.ok && data.product) {
+          const mapped = mapBackendProductToFrontend(data.product);
+          
+          const allRes = await fetch("/api/v1/products?limit=100");
+          const allData = await allRes.json();
+          if (allRes.ok && allData.products) {
+            const allMapped = allData.products.map(mapBackendProductToFrontend);
+            const list = allMapped.some((p: Product) => p.slug === slug) 
+              ? allMapped 
+              : [mapped, ...allMapped];
+            setProducts(list);
+          } else {
+            setProducts([mapped]);
+          }
+        } else {
+          setProducts(getStoredProducts());
+        }
+      } catch (err) {
+        console.error("Failed to load product details from backend:", err);
+        setProducts(getStoredProducts());
+      } finally {
+        setIsLoaded(true);
+      }
+    };
+    fetchProductDetail();
+  }, [slug]);
 
   // Retrieve matching product
   const product = useMemo(() => {

@@ -85,3 +85,90 @@ export const addOrder = (order: Omit<Order, "status" | "date">): void => {
   orders.unshift(newOrder);
   saveStoredOrders(orders);
 };
+
+export interface BackendVariant {
+  title?: string;
+  sku: string;
+  price?: number;
+  compareAtPrice?: number;
+  costPrice?: number;
+  stock?: number;
+  isDefault?: boolean;
+  isActive?: boolean;
+}
+
+export interface BackendImage {
+  url: string;
+  key: string;
+}
+
+export interface BackendProduct {
+  _id?: string;
+  name: string;
+  slug: string;
+  description?: string;
+  categoryIds?: Array<{ _id: string; name: string }>;
+  variants?: BackendVariant[];
+  fromPrice?: number;
+  averageRating?: number;
+  highlights?: string[];
+  materials?: string[];
+  finish?: string[];
+  numberOfLights?: number;
+  bulbType?: string;
+  totalStock?: number;
+  images?: BackendImage[];
+  dimensions?: string;
+  specifications?: Record<string, string>;
+  relatedProductIds?: Array<string | { _id: string }>;
+  warrantyMonths?: number;
+  voltage?: string;
+  totalWattage?: number;
+  installationType?: string;
+}
+
+export const mapBackendProductToFrontend = (p: BackendProduct): Product => {
+  const defaultVariant = p.variants?.find((v) => v.isDefault) || p.variants?.[0];
+  
+  // Calculate discount percentage based on compareAtPrice and price
+  const currentPrice = defaultVariant?.price || p.fromPrice || 0;
+  const originalPrice = defaultVariant?.compareAtPrice || currentPrice;
+  const discount = originalPrice > currentPrice 
+    ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100) 
+    : 0;
+
+  // Format dimensions
+  let dimensions = "";
+  if (p.dimensions && typeof p.dimensions === 'string') {
+    dimensions = p.dimensions;
+  }
+
+  // Specifications
+  const specifications: Record<string, string> = {};
+  if (p.voltage) specifications["Voltage"] = p.voltage;
+  if (p.totalWattage) specifications["Total Wattage"] = `${p.totalWattage}W`;
+  if (p.warrantyMonths) specifications["Warranty"] = `${p.warrantyMonths} Months`;
+  if (p.installationType) specifications["Installation"] = p.installationType;
+  if (p.numberOfLights) specifications["Number of Lights"] = String(p.numberOfLights);
+
+  return {
+    id: p._id ? p._id.toString() : "",
+    name: p.name || "",
+    slug: p.slug || "",
+    description: p.description || "",
+    category: p.categoryIds?.[0]?.name || "Chandelier",
+    price: currentPrice,
+    discount: discount,
+    rating: p.averageRating || 5.0,
+    reviews: [],
+    dimensions: dimensions,
+    material: p.materials?.join(", ") || "",
+    finish: p.finish?.join(", ") || "",
+    bulbs: p.numberOfLights ? `${p.numberOfLights} x ${p.bulbType?.toUpperCase() || "LED"}` : "Integrated LED",
+    stock: p.totalStock || 0,
+    images: p.images?.map((img) => img.url) || [],
+    features: p.highlights || [],
+    specifications: specifications,
+    relatedProducts: p.relatedProductIds?.map((rp) => typeof rp === "object" ? (rp._id ? rp._id.toString() : rp.toString()) : rp.toString()) || []
+  };
+};
