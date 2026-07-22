@@ -32,8 +32,13 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: 22
           script: |
-            cd /var/www/shree-sai-creation
-            git pull
+            cd /root/shreesai
+            git fetch origin
+            git reset --hard origin/main
             npm install
+            rm -rf .next
             npm run build
-            pm2 restart shree-sai-creation
+            pm2 stop shree-sai-creation
+            pm2 delete shree-sai-creation
+            pm2 start npm --name shree-sai-creation -- start
+            pm2 save
