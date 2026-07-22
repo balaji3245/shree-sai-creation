@@ -77,8 +77,13 @@ export default function AdminPage() {
   const [isAuth, setIsAuth] = useState(false);
   const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null);
 
-  // Active Tab: dashboard, products, orders
-  const [activeTab, setActiveTab] = useState<"dashboard" | "products" | "orders">("dashboard");
+  // Active Tab: dashboard, products, orders, users
+  const [activeTab, setActiveTab] = useState<"dashboard" | "products" | "orders" | "users">("dashboard");
+
+  // Users management state
+  const [users, setUsers] = useState<{ id: number; name: string; email: string; role: string; created_at: string }[]>([]);
+  const [usersLoading, setUsersLoading] = useState(false);
+  const [userSearch, setUserSearch] = useState("");
 
   // Database states
   const [products, setProducts] = useState<Product[]>([]);
@@ -159,6 +164,18 @@ export default function AdminPage() {
           }
         })
         .catch((err) => console.error("Error loading products in admin page:", err));
+
+      // Load users
+      setUsersLoading(true);
+      fetch("/api/v1/admin/users", {
+        headers: { "Authorization": `Bearer ${parsed.token}` }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.users && Array.isArray(data.users)) setUsers(data.users);
+        })
+        .catch(err => console.error("Error loading users:", err))
+        .finally(() => setUsersLoading(false));
 
       setIsOrdersLoading(true);
       fetch("/api/v1/admin/orders", {
@@ -473,11 +490,12 @@ export default function AdminPage() {
             {[
               { id: "dashboard", label: "Dashboard", icon: <LayoutDashboard size={16} /> },
               { id: "products", label: "Products Catalog", icon: <Package size={16} /> },
-              { id: "orders", label: "Orders Fulfilment", icon: <ShoppingBag size={16} /> }
+              { id: "orders", label: "Orders Fulfilment", icon: <ShoppingBag size={16} /> },
+              { id: "users", label: "User Management", icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> }
             ].map(tab => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as "dashboard" | "products" | "orders")}
+                onClick={() => setActiveTab(tab.id as "dashboard" | "products" | "orders" | "users")}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg text-xs uppercase tracking-wider transition-all text-left ${
                   activeTab === tab.id
                     ? "bg-[rgb(var(--gold))] text-black font-semibold shadow-md"
@@ -508,11 +526,11 @@ export default function AdminPage() {
         
         {/* Mobile quick navigation tabs */}
         <div className="flex md:hidden items-center justify-between border-b border-[rgb(var(--border))] pb-4 mb-6">
-          <div className="flex gap-2">
-            {["dashboard", "products", "orders"].map((tab) => (
+          <div className="flex gap-2 flex-wrap">
+            {["dashboard", "products", "orders", "users"].map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab as "dashboard" | "products" | "orders")}
+                onClick={() => setActiveTab(tab as "dashboard" | "products" | "orders" | "users")}
                 className={`text-[9px] uppercase tracking-widest px-3 py-1.5 rounded-full border transition-all ${
                   activeTab === tab 
                     ? "bg-[rgb(var(--gold))] text-black border-[rgb(var(--gold))] font-medium" 
@@ -538,6 +556,7 @@ export default function AdminPage() {
               {activeTab === "dashboard" && "Analytics Overview"}
               {activeTab === "products" && "Product Catalog Manager"}
               {activeTab === "orders" && "Fulfillment Operations"}
+              {activeTab === "users" && "User Management"}
             </h1>
             <div className="w-12 h-[1.5px] bg-[rgb(var(--gold))]/30 mt-3" />
           </div>
@@ -868,6 +887,154 @@ export default function AdminPage() {
                       <tr>
                         <td colSpan={6} className="p-12 text-center text-[10px] text-[rgb(var(--text-muted))] tracking-widest uppercase">
                           No order transactions placed yet. Place test orders from checkout page.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB 4: USER MANAGEMENT ─────────────────────── */}
+        {activeTab === "users" && (
+          <div className="space-y-6 animate-fade-up">
+
+            {/* Search bar */}
+            <div className="flex items-center gap-3 bg-[rgb(var(--surface))] border border-[rgb(var(--border))] rounded-xl px-4 py-3 max-w-md">
+              <Search size={14} className="text-[rgb(var(--text-muted))] shrink-0" />
+              <input
+                type="text"
+                placeholder="Search by name or email..."
+                value={userSearch}
+                onChange={e => setUserSearch(e.target.value)}
+                className="bg-transparent text-[10px] tracking-wider text-[rgb(var(--foreground))] placeholder-[rgb(var(--text-muted))] outline-none w-full normal-case"
+              />
+            </div>
+
+            {/* Stats bar */}
+            <div className="flex items-center gap-6 text-[10px] tracking-widest uppercase text-[rgb(var(--text-muted))]"
+            >
+              <span>Total: <span className="text-[rgb(var(--foreground))] font-semibold">{users.length}</span></span>
+              <span>Admins: <span className="text-[rgb(var(--gold))] font-semibold">{users.filter(u => u.role === "admin").length}</span></span>
+              <span>Customers: <span className="text-[rgb(var(--foreground))] font-semibold">{users.filter(u => u.role === "customer").length}</span></span>
+            </div>
+
+            {/* Users Table */}
+            <div className="bg-[rgb(var(--surface))] border border-[rgb(var(--border))] rounded-2xl overflow-hidden shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-[10px] tracking-widest uppercase">
+                  <thead>
+                    <tr className="border-b border-[rgb(var(--border))] bg-[rgba(var(--foreground),0.015)] text-[rgb(var(--text-muted))]">
+                      <th className="p-4 pl-6 font-semibold">User</th>
+                      <th className="p-4 font-semibold">Email</th>
+                      <th className="p-4 font-semibold">Role</th>
+                      <th className="p-4 font-semibold">Registered</th>
+                      <th className="p-4 pr-6 text-right font-semibold">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[rgb(var(--border))]">
+                    {usersLoading ? (
+                      <tr>
+                        <td colSpan={5} className="p-12 text-center text-[10px] text-[rgb(var(--text-muted))] tracking-widest uppercase">
+                          Loading users...
+                        </td>
+                      </tr>
+                    ) : users.filter(u =>
+                        u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
+                        u.email.toLowerCase().includes(userSearch.toLowerCase())
+                      ).length ? (
+                      users
+                        .filter(u =>
+                          u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
+                          u.email.toLowerCase().includes(userSearch.toLowerCase())
+                        )
+                        .map((user) => (
+                          <tr key={user.id} className="hover:bg-[rgba(var(--foreground),0.005)] transition-colors">
+
+                            {/* User name + avatar */}
+                            <td className="p-4 pl-6">
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-[rgb(var(--gold))]/10 border border-[rgb(var(--gold))]/20 flex items-center justify-center shrink-0">
+                                  <span className="text-[10px] font-semibold text-[rgb(var(--gold))]">
+                                    {user.name.charAt(0).toUpperCase()}
+                                  </span>
+                                </div>
+                                <div>
+                                  <p className="font-semibold text-[rgb(var(--foreground))] text-[11px] normal-case font-serif tracking-normal">{user.name}</p>
+                                  <p className="text-[8px] text-[rgb(var(--text-muted))] tracking-widest">ID #{user.id}</p>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* Email */}
+                            <td className="p-4 text-[rgb(var(--text-secondary))] normal-case tracking-normal text-[9px]">{user.email}</td>
+
+                            {/* Role badge + toggle */}
+                            <td className="p-4">
+                              <button
+                                onClick={async () => {
+                                  if (user.role === "admin" && !window.confirm("Demote this admin to customer?")) return;
+                                  const storedUser = localStorage.getItem("shree_sai_user");
+                                  const parsed = storedUser ? JSON.parse(storedUser) : null;
+                                  const res = await fetch("/api/v1/admin/users", {
+                                    method: "PATCH",
+                                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${parsed?.token}` },
+                                    body: JSON.stringify({ id: user.id, role: user.role === "admin" ? "customer" : "admin" })
+                                  });
+                                  if (res.ok) {
+                                    setUsers(prev => prev.map(u => u.id === user.id ? { ...u, role: u.role === "admin" ? "customer" : "admin" } : u));
+                                  }
+                                }}
+                                className={`text-[8px] px-2.5 py-1 rounded-full font-semibold border transition-all ${
+                                  user.role === "admin"
+                                    ? "bg-[rgb(var(--gold))]/10 text-[rgb(var(--gold))] border-[rgb(var(--gold))]/30 hover:bg-[rgb(var(--gold))]/20"
+                                    : "bg-white/5 text-[rgb(var(--text-muted))] border-white/10 hover:border-white/30 hover:text-white"
+                                }`}
+                                title="Click to toggle role"
+                              >
+                                {user.role === "admin" ? "Admin" : "Customer"}
+                              </button>
+                            </td>
+
+                            {/* Registered date */}
+                            <td className="p-4 text-[rgb(var(--text-muted))] text-[9px]">
+                              {new Date(user.created_at).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                            </td>
+
+                            {/* Delete action */}
+                            <td className="p-4 pr-6 text-right">
+                              <button
+                                onClick={async () => {
+                                  if (!window.confirm(`Delete user "${user.name}"? This cannot be undone.`)) return;
+                                  const storedUser = localStorage.getItem("shree_sai_user");
+                                  const parsed = storedUser ? JSON.parse(storedUser) : null;
+                                  const res = await fetch(`/api/v1/admin/users?id=${user.id}`, {
+                                    method: "DELETE",
+                                    headers: { "Authorization": `Bearer ${parsed?.token}` }
+                                  });
+                                  if (res.ok) {
+                                    setUsers(prev => prev.filter(u => u.id !== user.id));
+                                  } else {
+                                    const data = await res.json();
+                                    alert(data.message || "Delete failed");
+                                  }
+                                }}
+                                className="text-[rgb(var(--text-muted))] hover:text-red-400 transition-colors flex items-center gap-1.5 ml-auto"
+                                title="Delete user"
+                              >
+                                <Trash2 size={13} />
+                                <span className="text-[8px] tracking-widest">Delete</span>
+                              </button>
+                            </td>
+
+                          </tr>
+                        ))
+                    ) : (
+                      <tr>
+                        <td colSpan={5} className="p-12 text-center text-[10px] text-[rgb(var(--text-muted))] tracking-widest uppercase">
+                          No users found.
                         </td>
                       </tr>
                     )}
