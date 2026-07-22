@@ -273,32 +273,39 @@ export default function AdminPage() {
   };
 
   const handleImageFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
     const storedUser = localStorage.getItem("shree_sai_user");
     const parsed = storedUser ? JSON.parse(storedUser) : null;
     const token = parsed?.token;
 
-    const uploadData = new FormData();
-    uploadData.append("file", file);
-
     setIsUploadingImage(true);
-    try {
-      const res = await fetch("/api/v1/admin/upload", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        },
-        body: uploadData
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Upload failed");
+    const uploadedUrls: string[] = [];
 
-      // Append new image URL to current images input
-      const currentImages = formData.images ? formData.images.split(",").map(i => i.trim()).filter(Boolean) : [];
-      const updatedImages = [...currentImages, data.url].join(", ");
-      setFormData(prev => ({ ...prev, images: updatedImages }));
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const uploadData = new FormData();
+        uploadData.append("file", files[i]);
+
+        const res = await fetch("/api/v1/admin/upload", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
+          body: uploadData
+        });
+        const data = await res.json();
+        if (res.ok && data.url) {
+          uploadedUrls.push(data.url);
+        }
+      }
+
+      if (uploadedUrls.length > 0) {
+        const currentImages = formData.images ? formData.images.split(",").map(i => i.trim()).filter(Boolean) : [];
+        const updatedImages = [...currentImages, ...uploadedUrls].join(", ");
+        setFormData(prev => ({ ...prev, images: updatedImages }));
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Image upload failed";
       alert(msg);
@@ -1422,9 +1429,10 @@ export default function AdminPage() {
                     <label className="block font-semibold">Product Images *</label>
                     <label className="cursor-pointer text-[9px] uppercase tracking-wider text-[rgb(var(--gold))] hover:underline flex items-center gap-1 font-semibold">
                       <Upload size={12} />
-                      {isUploadingImage ? "Uploading..." : "Upload Local Photo"}
+                      {isUploadingImage ? "Uploading..." : "Upload Local Photos"}
                       <input
                         type="file"
+                        multiple
                         accept="image/*"
                         disabled={isUploadingImage}
                         onChange={handleImageFileUpload}
@@ -1437,12 +1445,13 @@ export default function AdminPage() {
                   <div className="border border-dashed border-[rgb(var(--border))] rounded-lg p-3 bg-[rgb(var(--surface))] flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2 text-[9px] text-[rgb(var(--text-muted))]">
                       <ImageIcon size={16} className="text-[rgb(var(--gold))]" />
-                      <span>Select image file from computer/mobile to upload automatically</span>
+                      <span>Select multiple photo files from computer/mobile to upload automatically</span>
                     </div>
                     <label className="px-3 py-1.5 bg-[rgb(var(--gold))]/10 border border-[rgb(var(--gold))]/30 text-[rgb(var(--gold))] hover:bg-[rgb(var(--gold))]/20 rounded text-[9px] font-semibold cursor-pointer shrink-0 transition-colors uppercase tracking-wider">
-                      {isUploadingImage ? "Uploading..." : "Browse File"}
+                      {isUploadingImage ? "Uploading..." : "Browse Photos"}
                       <input
                         type="file"
+                        multiple
                         accept="image/*"
                         disabled={isUploadingImage}
                         onChange={handleImageFileUpload}
