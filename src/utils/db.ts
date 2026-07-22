@@ -128,15 +128,39 @@ export interface BackendProduct {
   installationType?: string;
 }
 
-export const mapBackendProductToFrontend = (p: BackendProduct): Product => {
-  const defaultVariant = p.variants?.find((v) => v.isDefault) || p.variants?.[0];
+export const mapBackendProductToFrontend = (p: any): Product => {
+  // Direct SQLite / Frontend format support
+  if (typeof p.price === "number" && Array.isArray(p.images) && (p.images.length === 0 || typeof p.images[0] === "string")) {
+    return {
+      id: String(p.id || p._id || ""),
+      name: p.name || "",
+      slug: p.slug || "",
+      description: p.description || "",
+      category: p.category || "Chandelier",
+      price: p.price || 0,
+      discount: p.discount || 0,
+      rating: p.rating || 5.0,
+      reviews: p.reviews || [],
+      dimensions: p.dimensions || "",
+      material: p.material || "",
+      finish: p.finish || "",
+      bulbs: p.bulbs || "",
+      stock: typeof p.stock === "number" ? p.stock : 10,
+      images: p.images || [],
+      features: p.features || [],
+      specifications: p.specifications || {},
+      relatedProducts: p.relatedProducts || p.related_products || []
+    };
+  }
+
+  const defaultVariant = p.variants?.find((v: any) => v.isDefault) || p.variants?.[0];
   
   // Calculate discount percentage based on compareAtPrice and price
-  const currentPrice = defaultVariant?.price || p.fromPrice || 0;
+  const currentPrice = defaultVariant?.price || p.fromPrice || p.price || 0;
   const originalPrice = defaultVariant?.compareAtPrice || currentPrice;
   const discount = originalPrice > currentPrice 
     ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100) 
-    : 0;
+    : (p.discount || 0);
 
   // Format dimensions
   let dimensions = "";
@@ -145,7 +169,7 @@ export const mapBackendProductToFrontend = (p: BackendProduct): Product => {
   }
 
   // Specifications
-  const specifications: Record<string, string> = {};
+  const specifications: Record<string, string> = p.specifications || {};
   if (p.voltage) specifications["Voltage"] = p.voltage;
   if (p.totalWattage) specifications["Total Wattage"] = `${p.totalWattage}W`;
   if (p.warrantyMonths) specifications["Warranty"] = `${p.warrantyMonths} Months`;
@@ -153,24 +177,24 @@ export const mapBackendProductToFrontend = (p: BackendProduct): Product => {
   if (p.numberOfLights) specifications["Number of Lights"] = String(p.numberOfLights);
 
   return {
-    id: p._id ? p._id.toString() : "",
+    id: p._id ? p._id.toString() : String(p.id || ""),
     name: p.name || "",
     slug: p.slug || "",
     description: p.description || "",
-    category: p.categoryIds?.[0]?.name || "Chandelier",
+    category: p.categoryIds?.[0]?.name || p.category || "Chandelier",
     price: currentPrice,
     discount: discount,
-    rating: p.averageRating || 5.0,
+    rating: p.averageRating || p.rating || 5.0,
     reviews: [],
     dimensions: dimensions,
-    material: p.materials?.join(", ") || "",
-    finish: p.finish?.join(", ") || "",
-    bulbs: p.numberOfLights ? `${p.numberOfLights} x ${p.bulbType?.toUpperCase() || "LED"}` : "Integrated LED",
-    stock: p.totalStock || 0,
-    images: p.images?.map((img) => img.url) || [],
-    features: p.highlights || [],
+    material: Array.isArray(p.materials) ? p.materials.join(", ") : (p.material || ""),
+    finish: Array.isArray(p.finish) ? p.finish.join(", ") : (p.finish || ""),
+    bulbs: p.bulbs || (p.numberOfLights ? `${p.numberOfLights} x ${p.bulbType?.toUpperCase() || "LED"}` : "Integrated LED"),
+    stock: p.totalStock || p.stock || 0,
+    images: Array.isArray(p.images) ? p.images.map((img: any) => typeof img === "string" ? img : img.url) : [],
+    features: p.highlights || p.features || [],
     specifications: specifications,
-    relatedProducts: p.relatedProductIds?.map((rp) => typeof rp === "object" ? (rp._id ? rp._id.toString() : rp.toString()) : rp.toString()) || [],
+    relatedProducts: p.relatedProductIds?.map((rp: any) => typeof rp === "object" ? (rp._id ? rp._id.toString() : rp.toString()) : rp.toString()) || p.related_products || [],
     defaultVariantId: defaultVariant?._id ? defaultVariant._id.toString() : ""
   };
 };

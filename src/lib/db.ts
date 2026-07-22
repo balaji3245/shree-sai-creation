@@ -2,6 +2,7 @@ import Database from "better-sqlite3";
 import path from "path";
 import fs from "fs";
 import bcrypt from "bcryptjs";
+import { PRODUCTS } from "@/data/products";
 
 // Database file location (in project root, gitignored)
 const DB_DIR = path.join(process.cwd(), "data");
@@ -131,6 +132,38 @@ function initializeSchema(db: Database.Database) {
       hash
     );
     console.log("✅ Default admin seeded: admin@shreesaicreation.com / Admin@123");
+  }
+
+  // Seed default products into database if table is empty
+  const productCount = (db.prepare("SELECT COUNT(*) as count FROM products").get() as { count: number }).count;
+  if (productCount === 0) {
+    const insertStmt = db.prepare(`
+      INSERT INTO products (name, slug, description, category, price, compare_at_price, discount, rating, dimensions, material, finish, bulbs, stock, images, features, specifications, related_products)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    for (const p of PRODUCTS) {
+      insertStmt.run(
+        p.name,
+        p.slug,
+        p.description || "",
+        p.category || "Chandelier",
+        p.price || 0,
+        0,
+        p.discount || 0,
+        p.rating || 5.0,
+        p.dimensions || "",
+        p.material || "",
+        p.finish || "",
+        p.bulbs || "",
+        p.stock || 10,
+        JSON.stringify(p.images || []),
+        JSON.stringify(p.features || []),
+        JSON.stringify(p.specifications || {}),
+        JSON.stringify(p.relatedProducts || [])
+      );
+    }
+    console.log(`✅ Seeded ${PRODUCTS.length} default products into SQLite database.`);
   }
 }
 
