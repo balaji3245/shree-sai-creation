@@ -5,8 +5,8 @@ import { requireAdmin, logApiResponse } from "@/lib/middleware";
 // GET /api/v1/admin/users — list all registered users
 export async function GET(req: NextRequest) {
   const startTime = Date.now();
-  const authError = requireAdmin(req);
-  if (authError) return authError;
+  const authResult = requireAdmin(req);
+  if ("error" in authResult) return authResult.error;
 
   try {
     const db = getDb();
@@ -35,8 +35,8 @@ export async function GET(req: NextRequest) {
 // DELETE /api/v1/admin/users?id=123 — delete a user
 export async function DELETE(req: NextRequest) {
   const startTime = Date.now();
-  const authError = requireAdmin(req);
-  if (authError) return authError;
+  const authResult = requireAdmin(req);
+  if ("error" in authResult) return authResult.error;
 
   try {
     const { searchParams } = new URL(req.url);
@@ -74,8 +74,8 @@ export async function DELETE(req: NextRequest) {
 // PATCH /api/v1/admin/users — update user role
 export async function PATCH(req: NextRequest) {
   const startTime = Date.now();
-  const authError = requireAdmin(req);
-  if (authError) return authError;
+  const authResult = requireAdmin(req);
+  if ("error" in authResult) return authResult.error;
 
   try {
     const body = await req.json();
