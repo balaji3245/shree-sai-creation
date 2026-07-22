@@ -12,7 +12,7 @@ export default function CheckoutPage() {
 
   // Checkout phase: form -> success
   const [isCompleted, setIsCompleted] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"visa" | "mastercard" | "stripe" | "paypal" | "cod">("visa");
+  const [paymentMethod] = useState<"cod">("cod");
   const [orderNumber, setOrderNumber] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
@@ -285,108 +285,21 @@ export default function CheckoutPage() {
               {/* 2. Payment Method panel */}
               <div className="bg-[#0d0d0d] border border-white/5 p-6 md:p-8 space-y-6">
                 <h3 className="font-serif text-xs text-white tracking-widest font-semibold border-b border-white/5 pb-3">
-                  02. Transaction Method (Simulated)
+                  02. Payment Method
                 </h3>
                 
-                {/* Method Swatches */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                  {[
-                    { id: "visa", label: "Visa" },
-                    { id: "mastercard", label: "Mastercard" },
-                    { id: "stripe", label: "Stripe" },
-                    { id: "paypal", label: "PayPal" },
-                    { id: "cod", label: "COD" },
-                  ].map((method) => (
-                    <button
-                      key={method.id}
-                      type="button"
-                      onClick={() => setPaymentMethod(method.id as "visa" | "mastercard" | "stripe" | "paypal" | "cod")}
-                      className={`p-3 border flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer text-[9px] uppercase tracking-wider font-semibold ${
-                        paymentMethod === method.id
-                          ? "bg-[#C5A880]/5 border-[#C5A880] text-[#C5A880]"
-                          : "bg-transparent border-white/10 text-white hover:border-white/20"
-                      }`}
-                    >
-                      {method.id === "visa" || method.id === "mastercard" || method.id === "stripe" ? (
-                        <CreditCard size={14} />
-                      ) : method.id === "paypal" ? (
-                        <span className="text-[9px] italic font-extrabold tracking-tighter">PayPal</span>
-                      ) : (
-                        <span className="text-[9px] font-bold">COD</span>
-                      )}
-                      <span>{method.label}</span>
-                    </button>
-                  ))}
+                {/* Single COD Option */}
+                <div className="p-4 border border-[#C5A880] bg-[#C5A880]/5 rounded-none space-y-3 font-sans text-xs tracking-wider normal-case text-white/90 leading-relaxed">
+                  <div className="flex items-center gap-3 text-[#C5A880]">
+                    <ShieldCheck size={18} />
+                    <span className="font-serif text-sm font-semibold uppercase tracking-widest text-[#C5A880]">
+                      Cash on Delivery (COD)
+                    </span>
+                  </div>
+                  <p className="font-light text-white/70">
+                    Pay safely upon delivery. No advance online payment required. Cash, UPI, or QR payment is accepted at your doorstep when your chandelier is delivered.
+                  </p>
                 </div>
-
-                {/* Sub-Forms */}
-                {(paymentMethod === "visa" || paymentMethod === "mastercard" || paymentMethod === "stripe") && (
-                  <div className="space-y-4 pt-2">
-                    <div className="space-y-2">
-                      <label className="block font-medium">Cardholder Name *</label>
-                      <input
-                        type="text"
-                        value={formData.cardName}
-                        onChange={(e) => setFormData({ ...formData, cardName: e.target.value })}
-                        className="w-full bg-[#111] border border-white/10 text-white p-3 text-[9px] tracking-widest uppercase focus:border-white focus:outline-none"
-                        required={paymentMethod === "visa" || paymentMethod === "mastercard" || paymentMethod === "stripe"}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="block font-medium">Card Number *</label>
-                      <input
-                        type="text"
-                        value={formData.cardNumber}
-                        onChange={(e) => setFormData({ ...formData, cardNumber: e.target.value })}
-                        className="w-full bg-[#111] border border-white/10 text-white p-3 text-[9px] tracking-widest uppercase focus:border-white focus:outline-none"
-                        placeholder="•••• •••• •••• ••••"
-                        required={paymentMethod === "visa" || paymentMethod === "mastercard" || paymentMethod === "stripe"}
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="block font-medium">Expiry *</label>
-                        <input
-                          type="text"
-                          value={formData.cardExpiry}
-                          onChange={(e) => setFormData({ ...formData, cardExpiry: e.target.value })}
-                          className="w-full bg-[#111] border border-white/10 text-white p-3 text-[9px] tracking-widest uppercase focus:border-white focus:outline-none"
-                          placeholder="MM / YY"
-                          required={paymentMethod === "visa" || paymentMethod === "mastercard" || paymentMethod === "stripe"}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="block font-medium">CVV *</label>
-                        <input
-                          type="text"
-                          value={formData.cardCVV}
-                          onChange={(e) => setFormData({ ...formData, cardCVV: e.target.value })}
-                          className="w-full bg-[#111] border border-white/10 text-white p-3 text-[9px] tracking-widest uppercase focus:border-white focus:outline-none"
-                          placeholder="•••"
-                          required={paymentMethod === "visa" || paymentMethod === "mastercard" || paymentMethod === "stripe"}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {paymentMethod === "paypal" && (
-                  <div className="p-4 border border-[#C5A880]/20 bg-white/5 space-y-3 font-sans text-xs tracking-wider normal-case text-white/80 leading-relaxed font-light">
-                    <p className="text-[10px] uppercase tracking-widest text-[#C5A880] font-semibold font-sans mb-1">
-                      PayPal Checkout:
-                    </p>
-                    <p>You will be securely redirected to PayPal to complete your payment after clicking &quot;Place Order&quot;.</p>
-                  </div>
-                )}
-
-                {paymentMethod === "cod" && (
-                  <div className="p-4 border border-[#C5A880]/20 bg-white/5 space-y-3 font-sans text-xs tracking-wider normal-case text-white/80 leading-relaxed font-light">
-                    <p className="text-[10px] uppercase tracking-widest text-[#C5A880] font-semibold font-sans mb-1">
-                      Cash on Delivery (COD):
-                    </p>
-                    <p>No upfront payment is required. You will pay in cash or via UPI/QR code at your doorstep upon delivery.</p>
-                  </div>
-                )}
               </div>
             </div>
 

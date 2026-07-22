@@ -152,27 +152,9 @@ export const Footer: React.FC = () => {
             )}
             
             {/* Payment Icons */}
-            <div className="flex flex-wrap items-center gap-2 pt-2">
-              {/* Visa */}
-              <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm">
-                <span className="text-[8px] font-bold text-[#1434CB] italic tracking-tight font-sans">VISA</span>
-              </div>
-              {/* Mastercard */}
-              <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm gap-0.5">
-                <div className="w-3.5 h-3.5 rounded-full bg-[#EB001B] opacity-90" />
-                <div className="w-3.5 h-3.5 rounded-full bg-[#F79E1B] opacity-90 -ml-2" />
-              </div>
-              {/* Stripe */}
-              <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm">
-                <span className="text-[8px] font-bold text-[#635BFF] font-sans tracking-tight">stripe</span>
-              </div>
-              {/* Paypal */}
-              <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm">
-                <span className="text-[8px] font-extrabold text-[#003087] italic tracking-tighter font-sans">PayPal</span>
-              </div>
-              {/* COD */}
-              <div className="h-6 w-10 bg-white rounded flex items-center justify-center p-0.5 shadow-sm">
-                <span className="text-[8px] font-bold text-black font-sans flex items-center">COD</span>
+            <div className="flex items-center gap-2 pt-2">
+              <div className="px-3 py-1 bg-white/5 border border-[#C5A880]/30 rounded text-[9px] font-medium text-[#C5A880] tracking-widest uppercase flex items-center gap-1.5">
+                <span>🚚 Cash on Delivery (COD) Available</span>
               </div>
             </div>
           </div>
