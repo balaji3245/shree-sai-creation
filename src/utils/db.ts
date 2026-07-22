@@ -1,4 +1,4 @@
-import { PRODUCTS, Product } from "@/data/products";
+import { PRODUCTS, Product, Review } from "@/data/products";
 
 export interface OrderItem {
   id: string;
