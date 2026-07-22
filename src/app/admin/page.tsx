@@ -16,7 +16,9 @@ import {
   X,
   Search,
   SlidersHorizontal,
-  FolderOpen
+  FolderOpen,
+  Upload,
+  Image as ImageIcon
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
@@ -117,6 +119,43 @@ export default function AdminPage() {
   });
 
   const [isOrdersLoading, setIsOrdersLoading] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  const handleImageFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const storedUser = localStorage.getItem("shree_sai_user");
+    const parsed = storedUser ? JSON.parse(storedUser) : null;
+    const token = parsed?.token;
+
+    const uploadData = new FormData();
+    uploadData.append("file", file);
+
+    setIsUploadingImage(true);
+    try {
+      const res = await fetch("/api/v1/admin/upload", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+        body: uploadData
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Upload failed");
+
+      // Append new image URL to current images input
+      const currentImages = formData.images ? formData.images.split(",").map(i => i.trim()).filter(Boolean) : [];
+      const updatedImages = [...currentImages, data.url].join(", ");
+      setFormData(prev => ({ ...prev, images: updatedImages }));
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Image upload failed";
+      alert(msg);
+    } finally {
+      setIsUploadingImage(false);
+      e.target.value = "";
+    }
+  };
 
   // Verify authorization on mount
   useEffect(() => {
@@ -1219,15 +1258,79 @@ export default function AdminPage() {
               {/* Images & Key Features */}
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="block font-semibold">Images URLs (Comma-separated * first image is thumbnail)</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.images}
-                    onChange={(e) => setFormData({ ...formData, images: e.target.value })}
-                    placeholder="https://image1.jpg, https://image2.jpg"
-                    className="w-full bg-[rgb(var(--surface))] border border-[rgb(var(--border))] rounded-lg text-[10px] tracking-wider text-[rgb(var(--foreground))] p-3 focus:outline-none focus:border-[rgb(var(--gold))]/60 transition-colors"
-                  />
+                  <div className="flex items-center justify-between">
+                    <label className="block font-semibold">Product Images *</label>
+                    <label className="cursor-pointer text-[9px] uppercase tracking-wider text-[rgb(var(--gold))] hover:underline flex items-center gap-1 font-semibold">
+                      <Upload size={12} />
+                      {isUploadingImage ? "Uploading..." : "Upload Local Photo"}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={isUploadingImage}
+                        onChange={handleImageFileUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+
+                  {/* Upload file drag/button zone */}
+                  <div className="border border-dashed border-[rgb(var(--border))] rounded-lg p-3 bg-[rgb(var(--surface))] flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 text-[9px] text-[rgb(var(--text-muted))]">
+                      <ImageIcon size={16} className="text-[rgb(var(--gold))]" />
+                      <span>Select image file from computer/mobile to upload automatically</span>
+                    </div>
+                    <label className="px-3 py-1.5 bg-[rgb(var(--gold))]/10 border border-[rgb(var(--gold))]/30 text-[rgb(var(--gold))] hover:bg-[rgb(var(--gold))]/20 rounded text-[9px] font-semibold cursor-pointer shrink-0 transition-colors uppercase tracking-wider">
+                      {isUploadingImage ? "Uploading..." : "Browse File"}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={isUploadingImage}
+                        onChange={handleImageFileUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+
+                  {/* Thumbnail preview of current images */}
+                  {formData.images.split(",").map(i => i.trim()).filter(Boolean).length > 0 && (
+                    <div className="flex items-center gap-2 flex-wrap pt-1">
+                      {formData.images.split(",").map(i => i.trim()).filter(Boolean).map((imgUrl, idx) => (
+                        <div key={idx} className="relative group w-14 h-14 rounded-lg overflow-hidden border border-[rgb(var(--border))] bg-black">
+                          <img src={imgUrl} alt={`Preview ${idx + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const list = formData.images.split(",").map(i => i.trim()).filter(Boolean);
+                              const updated = list.filter((_, i) => i !== idx).join(", ");
+                              setFormData(prev => ({ ...prev, images: updated }));
+                            }}
+                            className="absolute top-0.5 right-0.5 bg-red-600/90 text-white rounded-full p-0.5 opacity-80 hover:opacity-100 transition-opacity"
+                            title="Remove Image"
+                          >
+                            <X size={10} />
+                          </button>
+                          {idx === 0 && (
+                            <span className="absolute bottom-0 left-0 right-0 bg-black/80 text-[7px] text-center text-[rgb(var(--gold))] uppercase tracking-tighter py-0.5">
+                              Main
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Comma-separated Image URLs input (Manual / Edit) */}
+                  <div className="space-y-1 pt-1">
+                    <span className="text-[8px] text-[rgb(var(--text-muted))]">Image URLs (comma-separated, first image is main thumbnail):</span>
+                    <input
+                      type="text"
+                      required
+                      value={formData.images}
+                      onChange={(e) => setFormData({ ...formData, images: e.target.value })}
+                      placeholder="https://image1.jpg, /uploads/prod_123.jpg"
+                      className="w-full bg-[rgb(var(--surface))] border border-[rgb(var(--border))] rounded-lg text-[10px] tracking-wider text-[rgb(var(--foreground))] p-3 focus:outline-none focus:border-[rgb(var(--gold))]/60 transition-colors"
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <label className="block font-semibold">Key Highlights / Features (Comma-separated)</label>
